@@ -6,17 +6,34 @@ export const home = async(req,res) => {
         return res.render("home",{pageTitle : "Home",videos});//videos를 db에서 받아옴.
 };
 
-export const watch = (req,res) => {
+export const watch = async(req,res) => {
     const id = req.params.id;
-    return res.render("watch",{pageTitle : `Watching`});
+    const video = await Video.findById(id);//Video에서 찾아도 되는 이유: 이 파일에 mongoose가 import돼 있으며, 이는  mongoDB와 이어져 있고 이를 이용해 Video model을 만들었으므로 자연스레 찾을 수 있게됨.
+    if(!video){
+        return res.render("404", { pageTitle: "Video not found." });
+    }
+    return res.render("watch",{pageTitle : video.title, video});
 }
-export const getEdit = (req,res) => {
+export const getEdit = async(req,res) => {
     const id = req.params.id;
-    return res.render("edit",{pageTitle:`Editing`});
+    const video = await Video.findById(id);
+    if(!video){
+        return res.render("404", { pageTitle: "Video not found." });
+    }
+    return res.render("edit",{pageTitle:`Editing ${video.title}`, video});
 }
-export const postEdit = (req, res) => {
+export const postEdit = async (req, res) => {//post를 하면 mongoDB 내의 값을 변경해줌.
     const {id} = req.params;
-    const {title} = req.body;
+    const {title, description, hashtags } = req.body;
+    const video = await Video.exists({_id:id});//video: DB에서 검색한 영상 object , Video: 우리가 만든 비디오 모델임.
+    if(!video){
+        return res.render("404", { pageTitle: "Video not found." });
+    }
+    await Video.findByIdAndUpdate(id, {
+        title:title,
+        description:description,
+        hashtags:hashtags.split(",").map((word) => word.startsWith("#") ? word :`#${word}`),
+    })
     return res.redirect(`/videos/${id}`);
 }
 export const getUpload = (req,res) => {
@@ -30,7 +47,7 @@ export const postUpload = async(req,res) => {
         await Video.create({//Video.create: video를 생성하고, DB에 저장함.
             title:title,
             description:description,
-            hashtags: hashtags.split(",").map((word) => `#${word}`),
+            hashtags: hashtags.split(",").map((word) => word.startsWith("#") ? word :`#${word}`),
         });
         return res.redirect("/");
     }
