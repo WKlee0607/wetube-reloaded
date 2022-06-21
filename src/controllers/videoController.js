@@ -32,7 +32,7 @@ export const postEdit = async (req, res) => {//post를 하면 mongoDB 내의 값
     await Video.findByIdAndUpdate(id, {
         title:title,
         description:description,
-        hashtags:hashtags.split(",").map((word) => word.startsWith("#") ? word :`#${word}`),
+        hashtags:Video.formatHashtag(hashtags),
     })
     return res.redirect(`/videos/${id}`);
 }
@@ -47,15 +47,15 @@ export const postUpload = async(req,res) => {
         await Video.create({//Video.create: video를 생성하고, DB에 저장함.
             title:title,
             description:description,
-            hashtags: hashtags.split(",").map((word) => word.startsWith("#") ? word :`#${word}`),
+            hashtags:Video.formatHashtag(hashtags),
         });
         return res.redirect("/");
     }
     catch(error){
+        console.log(error);
         return res.render("upload",{
             pageTitle:"Upload Video",
             errorMessage: error._message,
         });
     }
 }
-
