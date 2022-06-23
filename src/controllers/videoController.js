@@ -1,7 +1,7 @@
 import Video from "../models/Video";
 
 export const home = async(req,res) => {
-        const videos = await Video.find({});//await: 해당 코드가 끝날 때까지 다음 순서의 코드를 진행시키지 않음. 즉, 해당 코드를 기다려주는 역할을 함./ video.find: 모든 DB에 있는 모든 video를 찾음
+        const videos = await Video.find({}).sort({createdAt:"desc"});//await: 해당 코드가 끝날 때까지 다음 순서의 코드를 진행시키지 않음. 즉, 해당 코드를 기다려주는 역할을 함./ video.find: 모든 DB에 있는 모든 video를 찾음
         console.log(videos);
         return res.render("home",{pageTitle : "Home",videos});//videos를 db에서 받아옴.
 };
@@ -64,4 +64,19 @@ export const deleteVideo = async(req,res) => {
     const { id } = req.params;
     await Video.findByIdAndDelete(id);
     return res.redirect("/");
+}
+
+export const search = async (req, res) => {
+    //console.log(req.query);
+    //console.log(keyword); -> 값 O: 값, 값 X: undefined
+    const { keyword } = req.query;//-> req.query의 keyword의 value를 반환해줌.
+    let videos =[];//array로 만든 이유: search.pug에서 each를 이용하는데 이 each는 array만 받기 떄문임.
+    if(keyword){
+        videos = await Video.find({
+            title :{
+                $regex: new RegExp(keyword, "i")//RegExp(단어, 속성):keyword를 포함하는 비디오를 검색해줌 ,i: keyword대소문자 구분없이 검색하도록 해줌
+            }
+        })
+    }
+    return res.render("search",{pageTitle:"Search", videos});
 }
