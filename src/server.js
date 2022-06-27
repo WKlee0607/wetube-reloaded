@@ -20,8 +20,8 @@ app.use(express.urlencoded({extended:true}));//form의 내용을 js의 array obj
 app.use(
     session({
         secret:"Hello!",
-        resave: true,
-        saveUninitalized: true,
+        resave: false,
+        saveUninitalized: false,
         store: MongoStore.create({mongoUrl:"mongodb://127.0.0.1:27017/wetube"}),
 }));
 
