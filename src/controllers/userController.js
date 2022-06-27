@@ -43,7 +43,8 @@ export const postLogin = async(req,res) => {
     if(!ok){
         return res.status(400).render("login",{pageTitle, errorMessage:"Wrong password"});
     }
-    console.log("LOG USER IN! COMING SOON");
+    req.session.loggedIn = true;
+    req.session.user = user;//우변의 user = await User.findOne({username}) -> 세션에 정보 담기.
     return res.redirect("/");
 }
 
