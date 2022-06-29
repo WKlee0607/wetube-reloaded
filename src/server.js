@@ -19,10 +19,13 @@ app.use(express.urlencoded({extended:true}));//form의 내용을 js의 array obj
 
 app.use(
     session({
-        secret:"Hello!",
+        secret:process.env.COOKIE_SECRET,
         resave: false,
         saveUninitalized: false,
-        store: MongoStore.create({mongoUrl:"mongodb://127.0.0.1:27017/wetube"}),
+        /*cookie: {
+            maxAge:20000,//단위: ms(밀리세컨드), 20초임, 세션의 만료날짜 정해주는 것임.
+        },*/
+        store: MongoStore.create({mongoUrl: process.env.DB_URL}),
 }));
 
 app.get("/add-one",(req,res,next)=>{
