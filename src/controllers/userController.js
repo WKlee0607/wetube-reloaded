@@ -1,6 +1,7 @@
 import User from "../models/User";
 import fetch from "cross-fetch";
 import bcrypt from "bcrypt";
+import session from "express-session";
 
 export const getJoin = (req, res) => res.render("join",{pageTitle:"Join"});
 export const postJoin = async(req, res) => {
@@ -69,7 +70,7 @@ export const callbackGithubLogin = async (req, res) => {
         code: req.query.code,
     }
     const params = new URLSearchParams(config).toString();
-    const finalUrl = `${baseUrl}?${params}`;
+    const finalUrl = `${baseUrl}?${params}`;//token을 가져오기 위한 url
     const tokenRequest = await (
     await fetch(finalUrl, {
         method:"POST",
@@ -81,13 +82,13 @@ export const callbackGithubLogin = async (req, res) => {
 
     if("access_token" in tokenRequest){
         const {access_token} = tokenRequest;
-        const apiUrl = "https://api.github.com";
+        const apiUrl = "https://api.github.com";//token을 이용해 Github API에 접근하는 url
         const userData = await ( await fetch(`${apiUrl}/user`, {
             headers: {
                 Authorization: `token ${access_token}`,
             }
         })).json();
-        console.log(userData);
+        //console.log(userData);
         const emailData = await (
             await fetch(`${apiUrl}/user/emails`, {
                 headers: {
@@ -95,13 +96,14 @@ export const callbackGithubLogin = async (req, res) => {
                 },
             })
         ).json();
-        const emailObj = emailData.find(
+        const emailObj = emailData.find(//find: object들 중, 원하는 object찾을 때 이용.
             (email) => email.primary === true && email.verified === true
           );
         if(!emailObj){
+            // set notification
             return res.redirect("/login");//나중에 notification도 보내줄 것임. -> notification: user가 /login으로 redirect하게 해주고, user가 /login에서 에러 메시지를 보게 햐줄것임.
         }
-        let user = await User.findOne({ email: emailObj.email });
+        let user = await User.findOne({ email: emailObj.email });// github에서 찾은 이메일을 우리의 DB에서 찾는것임.
         if(!user){
             user = await User.create({
                 avatarUrl: userData.avatar_url,
@@ -109,7 +111,7 @@ export const callbackGithubLogin = async (req, res) => {
                 username: userData.login,
                 email: emailObj.email,
                 password: "",
-                socialOnly: true,
+                socialOnly: true,//socialOnly:true ->  소셜 계정으로 만들어진 계정이란 뜻임. 따라서 이 사람은 password가 없으므로 login form을 이용할 수 없음.
                 location: userData.location? userData.location:"Unknown",
             });
         }
@@ -122,10 +124,35 @@ export const callbackGithubLogin = async (req, res) => {
     }
 }
 
-
-export const edit = (req, res) => res.send("Edit");
 export const logout = (req, res) => {
     req.session.destroy();
     return res.redirect("/");
 };
+
+export const getEdit = (req, res) => {
+    return res.render("edit-profile", {pageTitle:"Edit Profile"});
+};
+
+export const postEdit = async (req, res) => {
+    const { session: {user: {_id}}, body: { name, email, username, location}} = req;//여기서 body는 업데이트 된 정보.
+    if(req.session.user.email !== email || req.session.user.username !== username){
+        const existEmail = await User.exists({email});
+        const existUsername = await User.exists({username});
+        if(existEmail || existUsername){
+            return res.render("edit-profile",{pageTitle:"Edit Profile",errorSpan:"that email/username is already used"});
+        } 
+    } 
+    const updateUser = await User.findByIdAndUpdate(_id, {
+        ...req.session.user,//session 을 업데이트 해줌.(업데이트 해주는 것)
+        name,
+        email,
+        username,
+        location,
+    },
+    {new:true}
+    );
+    req.session.user = updateUser;
+    return res.redirect("/users/edit");
+}
+
 export const see = (req, res) => res.send("See User");
