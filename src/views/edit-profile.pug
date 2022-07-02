@@ -1,12 +1,14 @@
 extends base 
 
 block content 
-    span #{errorSpan}
+    if errorSpan
+        span=errorSpan
     form(method="POST")
         input(name="name", type="text", required, placeholder="Name", value=loggedInUser.name)
         input(name="email", type="email", required, placeholder="Email", value=loggedInUser.email)
         input(name="username", type="text", required, placeholder="User name", value=loggedInUser.username)
         input(name="location", type="text", required, placeholder="Location", value=loggedInUser.location)
         input(type="submit", value="Update Profile")
-        hr
-        a(href="change-password") 
+        if !loggedInUser.socialOnly
+            hr
+            a(href="change-password") Change Password &rarr;
