@@ -153,6 +153,30 @@ export const postEdit = async (req, res) => {
     );
     req.session.user = updateUser;
     return res.redirect("/users/edit");
-}
+};
+
+export const getChangePassword = (req, res) => {
+    if(req.session.user.socialOnly === true){
+        return res.redirect("/");
+    }
+    return res.render("users/change-password",{pageTitle:"Change Password"});
+};
+
+export const postChangePassword = async (req, res) => {
+    const { session: {user: {_id}}, body: { oldPassword, newPassword, newPasswordConfirmation }} = req;
+    const user = await User.findById(_id);
+    const ok = await bcrypt.compare(oldPassword, user.password)//bcrypt: 비밀번호 암호화 해주는 패키지 , compare: 두 인수를 받아 첫번째는 암호화하여 비교하고, 두번째는 그 상태 그대로(암호화가 이미 걸린상태) 두고 두 인수를 비교한다. 출력값은 Boolean
+    if(!ok){
+        return res.status(400).render("users/change-password",{pageTitle:"Change Password", errorMessage: "The current password is incorrect"});
+    }
+    if(newPassword !== newPasswordConfirmation){
+        return res.status(400).render("users/change-password",{pageTitle:"Change Password", errorMessage: "The password does not match the confirmation"});
+    }
+    
+    user.password = newPassword;//user.password를 새로운 비밀번호로 바꿔주는 것임.
+    await user.save(); // model내장 함수 save()를 발동시킴. save: password를 hash화 시켜서 저장함. // save는 promise일지도 모르기에 await을 해줌
+    // send notification
+    return res.redirect("/users/logout");
+};
 
 export const see = (req, res) => res.send("See User");
