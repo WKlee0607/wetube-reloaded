@@ -7,11 +7,12 @@ export const home = async(req,res) => {
 };
 
 export const watch = async(req,res) => {
-    const id = req.params.id;
+    const {id} = req.params;
     const video = await Video.findById(id);//Video에서 찾아도 되는 이유: 이 파일에 mongoose가 import돼 있으며, 이는  mongoDB와 이어져 있고 이를 이용해 Video model을 만들었으므로 자연스레 찾을 수 있게됨.
     if(!video){
         return res.render("404", { pageTitle: "Video not found." });
     }
+    console.log(video)
     return res.render("watch",{pageTitle : video.title, video});
 }
 export const getEdit = async(req,res) => {
@@ -42,11 +43,13 @@ export const getUpload = (req,res) => {
 
 export const postUpload = async(req,res) => {
     // here we will add a video to the videos array.
+    const { path: fileUrl } = req.file;
     const { title, description, hashtags } = req.body;
     try{
         await Video.create({//Video.create: video를 생성하고, DB에 저장함.
-            title:title,
-            description:description,
+            title,
+            description,
+            fileUrl,
             hashtags:Video.formatHashtag(hashtags),
         });
         return res.redirect("/");
