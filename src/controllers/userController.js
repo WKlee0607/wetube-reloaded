@@ -134,7 +134,8 @@ export const getEdit = (req, res) => {
 };
 
 export const postEdit = async (req, res) => {
-    const { session: {user: {_id}}, body: { name, email, username, location}} = req;//여기서 body는 업데이트 된 정보.
+    const { session: {user: {_id, avatarUrl}}, body: { name, email, username, location}, file} = req;//여기서 body는 업데이트 된 정보.
+    //onsole.log(file); 없으면 undefined로 뜰 것임
     if(req.session.user.email !== email || req.session.user.username !== username){
         const existEmail = await User.exists({email});
         const existUsername = await User.exists({username});
@@ -143,7 +144,7 @@ export const postEdit = async (req, res) => {
         } 
     } 
     const updateUser = await User.findByIdAndUpdate(_id, {
-        ...req.session.user,//session 을 업데이트 해줌.(업데이트 해주는 것)
+        avatarUrl: file ? file.path :avatarUrl,
         name,
         email,
         username,
