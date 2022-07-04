@@ -13,9 +13,9 @@ const userSchema = new mongoose.Schema({
 })
 
 userSchema.pre("save", async function() {
-    //console.log("befor hash: ",this.password) -> hash되기 전
-    this.password = await bcrypt.hash(this.password, 5);//callback fn 공백 이유: await을 써주고 있기 때문.
-    //console.log("after hash: ",this.password) -> hash된 후
+    if(this.isModified("password")){
+        this.password = await bcrypt.hash(this.password, 5);//callback fn 공백 이유: await을 써주고 있기 때문.
+    }
 });
 
 const User = mongoose.model("User",userSchema);
