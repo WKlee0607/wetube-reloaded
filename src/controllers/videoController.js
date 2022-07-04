@@ -1,4 +1,5 @@
 import Video from "../models/Video";
+import User from "../models/User"
 
 export const home = async(req,res) => {
         const videos = await Video.find({}).sort({createdAt:"desc"});//await: 해당 코드가 끝날 때까지 다음 순서의 코드를 진행시키지 않음. 즉, 해당 코드를 기다려주는 역할을 함./ video.find: 모든 DB에 있는 모든 video를 찾음
@@ -8,13 +9,16 @@ export const home = async(req,res) => {
 
 export const watch = async(req,res) => {
     const {id} = req.params;
-    const video = await Video.findById(id);//Video에서 찾아도 되는 이유: 이 파일에 mongoose가 import돼 있으며, 이는  mongoDB와 이어져 있고 이를 이용해 Video model을 만들었으므로 자연스레 찾을 수 있게됨.
+    const video = await Video.findById(id).populate("owner");//Video에서 찾아도 되는 이유: 이 파일에 mongoose가 import돼 있으며, 이는  mongoDB와 이어져 있고 이를 이용해 Video model을 만들었으므로 자연스레 찾을 수 있게됨.
+    console.log(video);
     if(!video){
         return res.render("404", { pageTitle: "Video not found." });
     }
     console.log(video)
     return res.render("watch",{pageTitle : video.title, video});
 }
+
+
 export const getEdit = async(req,res) => {
     const id = req.params.id;
     const video = await Video.findById(id);
@@ -42,16 +46,20 @@ export const getUpload = (req,res) => {
 }
 
 export const postUpload = async(req,res) => {
-    // here we will add a video to the videos array.
+    const {user : {_id}} = req.session;
     const { path: fileUrl } = req.file;
     const { title, description, hashtags } = req.body;
     try{
-        await Video.create({//Video.create: video를 생성하고, DB에 저장함.
+        const newVideo = await Video.create({//Video.create: video를 생성하고, DB에 저장함.
             title,
             description,
             fileUrl,
+            owner:_id,
             hashtags:Video.formatHashtag(hashtags),
         });
+        const user = await User.findById(_id);
+        user.videos.push(newVideo._id);
+        user.save();
         return res.redirect("/");
     }
     catch(error){
