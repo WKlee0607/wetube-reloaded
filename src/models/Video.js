@@ -1,4 +1,4 @@
-import mongoose from "mongoose";
+import mongoose, { mongo, Mongoose } from "mongoose";
 
 const videoSchema = new mongoose.Schema({
     title: {type:String, required:true, trim:true, maxlength:80},//{type:String}이라 써도됨.
@@ -10,6 +10,7 @@ const videoSchema = new mongoose.Schema({
         views:{type:Number, default:0, required:true},
         rating:{type:Number, default:0, required:true},
     },
+    owner: { type: mongoose.Schema.Types.ObjectId, required: true, ref:"User" }
 })
 
 videoSchema.static('formatHashtag', function(hashtags){
