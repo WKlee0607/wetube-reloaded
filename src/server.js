@@ -34,7 +34,7 @@ app.get("/add-one",(req,res,next)=>{
 
 app.use(localsMiddleware);
 app.use("/uploads", express.static("uploads"));
-app.use("/assets", express.static("assets"));
+app.use("/assets", express.static("assets"));// /assets는 assets 폴더 내용을 보여주는 거임
 app.use("/",rootRouter);
 app.use("/videos",videoRouter);
 app.use("/users",userRouter);
