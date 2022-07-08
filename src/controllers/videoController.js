@@ -2,7 +2,7 @@ import Video from "../models/Video";
 import User from "../models/User"
 
 export const home = async(req,res) => {
-        const videos = await Video.find({}).sort({createdAt:"desc"});//await: 해당 코드가 끝날 때까지 다음 순서의 코드를 진행시키지 않음. 즉, 해당 코드를 기다려주는 역할을 함./ video.find: 모든 DB에 있는 모든 video를 찾음
+        const videos = await Video.find({}).sort({createdAt:"desc"}).populate("owner");//await: 해당 코드가 끝날 때까지 다음 순서의 코드를 진행시키지 않음. 즉, 해당 코드를 기다려주는 역할을 함./ video.find: 모든 DB에 있는 모든 video를 찾음
         console.log(videos);
         return res.render("home",{pageTitle : "Home",videos});//videos를 db에서 받아옴.
 };
@@ -107,7 +107,7 @@ export const search = async (req, res) => {
             title :{
                 $regex: new RegExp(keyword, "i")//RegExp(단어, 속성):keyword를 포함하는 비디오를 검색해줌 ,i: keyword대소문자 구분없이 검색하도록 해줌
             }
-        })
+        }).populate("owner")
     }
     return res.render("search",{pageTitle:"Search", videos});
 }
