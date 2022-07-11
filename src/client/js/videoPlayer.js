@@ -5,6 +5,12 @@ const volumeRange = document.getElementById("volume");
 const currenTime = document.getElementById("currenTime");
 const totalTime = document.getElementById("totalTime");
 const timeline = document.getElementById("timeline");
+const fullScreenBtn = document.getElementById("fullScreen");
+const videoContainer = document.getElementById("videoContainer");
+const videoControls = document.getElementById("videoControls");
+
+let controlsTimeout = null;
+let controlsMovementTimeout = null;
 
 let videoPlayStatus = false;
 let setVideoPlayStatus = false;
@@ -87,6 +93,37 @@ const handleTimelineSet = () => {
     setVideoPlayStatus = false;
     };
 
+const handleFullscreen = () => {
+    const fullscreen = document.fullscreenElement;//현재 fullscreen인 개체 보여줌.
+    if(fullscreen){
+        document.exitFullscreen();
+        fullScreenBtn.innerText ="Enter Full Screen";
+    } else{
+        videoContainer.requestFullscreen();
+        fullScreenBtn.innerText ="Exit Full Screen";
+    }
+};
+
+const hideControls = () => videoControls.classList.remove("showing");
+
+const handelMouseMove = () => {
+    if(controlsTimeout){
+        clearTimeout(controlsTimeout);//이러면 timeout이 취소될 것임.
+        controlsTimeout = null;
+    }
+    if(controlsMovementTimeout){
+        clearTimeout(controlsMovementTimeout);
+        controlsMovementTimeout = null;
+    }
+    videoControls.classList.add("showing");
+    controlsMovementTimeout = setTimeout(hideControls, 2000);
+};
+
+const handleMouseLeave = () => {
+    controlsTimeout = setTimeout(hideControls, 2000); //2초 뒤에 컨트롤러 사라짐. / Timeout의 id=39임. 즉, return값이 39라는 뜻임.
+    //console.log(controlsTimeout);
+};
+
 playBtn.addEventListener("click", handlePlayClick);
 muteBtn.addEventListener("click", handleMute);
 volumeRange.addEventListener("input", handleVolumeInput);
@@ -95,4 +132,6 @@ video.addEventListener("loadedmetadata", handleLoadedMetadata);
 video.addEventListener("timeupdate", handleTimeUpdate);
 timeline.addEventListener("input", handleTimelineChange);
 timeline.addEventListener("change", handleTimelineSet);
-
+fullScreenBtn.addEventListener("click", handleFullscreen);
+video.addEventListener("mousemove", handelMouseMove);
+video.addEventListener("mouseleave", handleMouseLeave);
