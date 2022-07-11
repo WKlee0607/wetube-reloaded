@@ -16,7 +16,7 @@ export const watch = async(req,res) => {
     }
     console.log(video)
     return res.render("watch",{pageTitle : video.title, video});
-}
+};
 
 
 export const getEdit = async(req,res) => {
@@ -30,7 +30,7 @@ export const getEdit = async(req,res) => {
         return res.status(403).redirect("/");
     }
     return res.render("edit",{pageTitle:`Editing ${video.title}`, video});
-}
+};
 
 export const postEdit = async (req, res) => {//post를 하면 mongoDB 내의 값을 변경해줌.
     const {user:{_id}} = req.session;
@@ -38,7 +38,7 @@ export const postEdit = async (req, res) => {//post를 하면 mongoDB 내의 값
     const {title, description, hashtags } = req.body;
     const video = await Video.exists({_id:id});//video: DB에서 검색한 영상 object , Video: 우리가 만든 비디오 모델임.
     if(!video){
-        return rres.status(404).render("404", { pageTitle: "Video not found." });
+        return res.status(404).render("404", { pageTitle: "Video not found." });
     }
     if(String(video.owner) !== String(_id)){
         return res.status(403).redirect("/");
@@ -49,7 +49,8 @@ export const postEdit = async (req, res) => {//post를 하면 mongoDB 내의 값
         hashtags:Video.formatHashtag(hashtags),
     })
     return res.redirect(`/videos/${id}`);
-}
+};
+
 export const getUpload = (req,res) => {
     return res.render("upload",{pageTitle:"Upload Video"});
 }
@@ -78,7 +79,7 @@ export const postUpload = async(req,res) => {
             errorMessage: error._message,
         });
     }
-}
+};
 
 export const deleteVideo = async(req,res) => {
     const { id } = req.params;
@@ -86,7 +87,7 @@ export const deleteVideo = async(req,res) => {
     const video = await Video.findById(id);
     const user = await User.findById(_id);
     if(!video){
-        return rres.status(404).render("404", { pageTitle: "Video not found." });
+        return res.status(404).render("404", { pageTitle: "Video not found." });
     }
     if(String(video.owner) !== String(_id)){
         return res.status(403).redirect("/");
@@ -110,4 +111,4 @@ export const search = async (req, res) => {
         }).populate("owner")
     }
     return res.render("search",{pageTitle:"Search", videos});
-}
+};
