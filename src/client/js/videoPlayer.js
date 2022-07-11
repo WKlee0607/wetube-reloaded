@@ -76,6 +76,9 @@ const handleLoadedMetadata = () => {
 const handleTimeUpdate = () => {
     currenTime.innerText = formatTime(Math.floor(video.currentTime));
     timeline.value = Math.floor(video.currentTime);// 비디오의 현재 진행시간을 타임라인에 나타내줌.
+    if(Number(timeline.value) === Math.floor(video.duration)){
+        playBtn.innerText ="Play";
+    }
 };
 
 const handleTimelineChange = (event) => {
@@ -86,7 +89,7 @@ const handleTimelineChange = (event) => {
     }
     video.pause();
     video.currentTime = value;
-    };
+};
 
 const handleTimelineSet = () => {
     videoPlayStatus ? video.play() : video.pause();
@@ -123,6 +126,8 @@ const handleMouseLeave = () => {
     controlsTimeout = setTimeout(hideControls, 2000); //2초 뒤에 컨트롤러 사라짐. / Timeout의 id=39임. 즉, return값이 39라는 뜻임.
     //console.log(controlsTimeout);
 };
+
+
 
 playBtn.addEventListener("click", handlePlayClick);
 muteBtn.addEventListener("click", handleMute);
