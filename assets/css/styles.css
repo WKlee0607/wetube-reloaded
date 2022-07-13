@@ -315,6 +315,10 @@ input[type=submit],
   text-decoration: underline;
 }
 
+.hidden {
+  display: none;
+}
+
 a {
   color: inherit;
   text-decoration: none;
