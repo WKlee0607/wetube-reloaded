@@ -134,9 +134,14 @@ const handleSpacePress = (event) => {
     if(event.code === "Space") {
         handlePlayClick();
     }
-}
+};
 
-
+const handleEnded = () => {
+    const { videoid } = videoContainer.dataset;
+    fetch(`/api/videos/${videoid}/view`, {
+        method:"POST",
+    }); 
+};
 
 playBtn.addEventListener("click", handlePlayClick);
 video.addEventListener("click", handlePlayClick);
@@ -145,6 +150,7 @@ volumeRange.addEventListener("input", handleVolumeInput);
 volumeRange.addEventListener("change", handleVolumeChange);
 video.addEventListener("loadedmetadata", handleLoadedMetadata);
 video.addEventListener("timeupdate", handleTimeUpdate);
+video.addEventListener("ended", handleEnded);
 timeline.addEventListener("input", handleTimelineChange);
 timeline.addEventListener("change", handleTimelineSet);
 fullScreenBtn.addEventListener("click", handleFullscreen);
