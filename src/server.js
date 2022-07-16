@@ -34,9 +34,16 @@ app.get("/add-one",(req,res,next)=>{
     return res.send(`${req.session.id}`);
 });
 
+app.use((req, res, next) => {
+    res.header("Cross-Origin-Embedder-Policy", "require-corp");
+    res.header("Cross-Origin-Opener-Policy", "same-origin");
+    next();
+});
+
 app.use(localsMiddleware);
 app.use("/uploads", express.static("uploads"));
 app.use("/assets", express.static("assets"));// /assets는 assets 폴더 내용을 보여주는 거임
+app.use("/findFfmpeg", express.static("node_modules/@ffmpeg/core/dist"));
 app.use("/",rootRouter);
 app.use("/videos",videoRouter);
 app.use("/users",userRouter);
