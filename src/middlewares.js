@@ -7,7 +7,7 @@ export const localsMiddleware = (req, res, next) => {
     res.locals.siteName = "Wetube";
     //console.log(res.locals)
     next();
-}
+};
 
 export const protectorMiddleware = (req, res, next) => {
     if(req.session.loggedIn){
@@ -23,7 +23,7 @@ export const publicOnlyMiddleware = (req, res, next) => {
     } else{
         return res.redirect("/");
     }
-}
+};
 
 export const avatarUpload = multer({ dest: "uploads/avatars/", limits:{//limits: Limits of the uploaded data
     fileSize: 3000000,//(단위: byte)
