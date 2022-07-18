@@ -44,6 +44,14 @@ const handleDownload = async() => {
     document.body.appendChild(thumbA);
     thumbA.click();
 
+    ffmpeg.FS("unlink", "recording.webm"); // 파일을 계속 들 있으면 무거워서 이렇게 해줌.
+    ffmpeg.FS("unlink",  "outputs.mp4");
+    ffmpeg.FS("unlink", "thumbnail.jpg");
+
+    URL.revokeObjectURL(mp4Url);
+    URL.revokeObjectURL(thumbnailUrl);
+    URL.revokeObjectURL(videoFile);
+
     const tracks = stream.getTracks();
     tracks.forEach((track) => {
         track.stop();
