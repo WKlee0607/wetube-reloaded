@@ -1,21 +1,22 @@
 extends base.pug
 
 block content
-    div 
-        video#preview.hidden 
-        button#startBtn.hidden Start Recording
-        button#initBtn if u record video, Click here 
-    if errorMessage
-        span=errorMessage
-    form(method="POST", enctype="multipart/form-data") <!--action="/videos/upload"은 어차피 아무 url도 안 적어주면 해당 url에서 실행하기 때문에 없어도 된다.-->
-        label(for="video") Video File 
-        input(type="file", accept="video/*", required, id="video", name="video")
-        label(for="thumb") Thumbnail File 
-        input(type="file", accept="image/*", required, id="thumb", name="thumb")
-        input(name="title",placeholder="Title", required, type="text", maxlength=80)
-        input(name="description",placeholder="Description", required, type="text", minlength=20)
-        input(name="hashtags",placeholder="Hashtags, separated by comma.", required, type="text")
-        input(type="submit", value="Upload Video")
+    div.upload__container
+        div.upload__video
+            video#preview.hidden 
+            button#startBtn.hidden Start Recording
+            button#initBtn if u record video, Click here 
+        if errorMessage
+            span=errorMessage
+        form(method="POST", enctype="multipart/form-data") <!--action="/videos/upload"은 어차피 아무 url도 안 적어주면 해당 url에서 실행하기 때문에 없어도 된다.-->
+            label(for="video") Video File 
+            input(type="file", accept="video/*", required, id="video", name="video")
+            label(for="thumb") Thumbnail File 
+            input(type="file", accept="image/*", required, id="thumb", name="thumb")
+            input(name="title",placeholder="Title", required, type="text", maxlength=80)
+            input(name="description",placeholder="Description", required, type="text", minlength=20)
+            input(name="hashtags",placeholder="Hashtags, separated by comma.", required, type="text")
+            input(type="submit", value="Upload Video")
 
 block scripts 
     script(src="/assets/js/recorder.js")
