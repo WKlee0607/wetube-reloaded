@@ -2,6 +2,7 @@ import express from "express";// 혹은 "node_modules/express"
 import { urlencoded } from "express";
 import morgan from "morgan";
 import session from "express-session";
+import flash from "express-flash";
 import MongoStore from "connect-mongo";
 import rootRouter from "./routers/rootRouter";
 import userRouter from "./routers/userRouter";
@@ -40,6 +41,8 @@ app.use((req, res, next) => {
     next();
 });
 
+
+app.use(flash());
 app.use(localsMiddleware);
 app.use("/uploads", express.static("uploads"));
 app.use("/assets", express.static("assets"));// /assets는 assets 폴더 내용을 보여주는 거임
