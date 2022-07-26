@@ -127,3 +127,8 @@ export const registerView = async(req, res) => {
     return res.sendStatus(200); // 200: done, ok라는 뜻임. -> sendStatus를 보내야 연결을 성공적으로 끝낼 수 있음.
 };
     
+export const createComment = (req, res) => {
+    console.log(req.params);
+    console.log(req.body);
+    res.end();
+};
