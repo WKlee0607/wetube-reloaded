@@ -1,5 +1,7 @@
 import Video from "../models/Video";
+import Comment from "../models/Comment";
 import User from "../models/User"
+import { async } from "regenerator-runtime";
 
 export const home = async(req,res) => {
         const videos = await Video.find({}).sort({createdAt:"desc"}).populate("owner");//await: 해당 코드가 끝날 때까지 다음 순서의 코드를 진행시키지 않음. 즉, 해당 코드를 기다려주는 역할을 함./ video.find: 모든 DB에 있는 모든 video를 찾음
@@ -9,7 +11,7 @@ export const home = async(req,res) => {
 
 export const watch = async(req,res) => {
     const {id} = req.params;
-    const video = await Video.findById(id).populate("owner");//Video에서 찾아도 되는 이유: 이 파일에 mongoose가 import돼 있으며, 이는  mongoDB와 이어져 있고 이를 이용해 Video model을 만들었으므로 자연스레 찾을 수 있게됨.
+    const video = await Video.findById(id).populate("owner").populate("comments");//Video에서 찾아도 되는 이유: 이 파일에 mongoose가 import돼 있으며, 이는  mongoDB와 이어져 있고 이를 이용해 Video model을 만들었으므로 자연스레 찾을 수 있게됨.
     console.log(video);
     if(!video){
         return res.render("404", { pageTitle: "Video not found." });
@@ -127,8 +129,18 @@ export const registerView = async(req, res) => {
     return res.sendStatus(200); // 200: done, ok라는 뜻임. -> sendStatus를 보내야 연결을 성공적으로 끝낼 수 있음.
 };
     
-export const createComment = (req, res) => {
-    console.log(req.params);
-    console.log(req.body);
-    res.end();
+export const createComment = async (req, res) => {
+    const {session : {user}, body : {text}, params : {id}} = req;
+    const video = await Video.findById(id);
+    if(!video){
+        return res.sendStatus(404);
+    }
+    const comment = await Comment.create({
+        text,
+        owner: user._id,
+        video:id,
+    });
+    video.comments.push(comment._id); // 만들 댓글의 ObjId를  비디오의 comments array에 넣어줌
+    video.save(); //comments array에 변경사항 생겨서 저장해줌 !
+    res.sendStatus(201);
 };
