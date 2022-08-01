@@ -32,6 +32,9 @@ block content
                li.video__comment
                     i.fas.fa-comment
                     span  #{comment.text}
+                    if (String(loggedInUser._id) === String(comment.owner))
+                        span.removeBtn(data-commentId=comment._id)  ❌
+                    
 //-
     div
         p=video.description
