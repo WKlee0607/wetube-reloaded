@@ -141,13 +141,15 @@ export const createComment = async (req, res) => {
     });
     video.comments.push(comment._id); // 만들 댓글의 ObjId를  비디오의 comments array에 넣어줌
     video.save(); //comments array에 변경사항 생겨서 저장해줌 !
-    return res.status(201).json({ newCommentId: comment._id });
+    return res.status(201).json({ newCommentId: comment._id }); // fetch에 대해 프론트엔드로 데이터를 보내고 싶다면 json 형태로 보내야함.
 };
 
+// 내가 만든 controller
 export const removeComment = async (req, res) => {
-    const {body :{commentid}, params :{id}, session} = req;
-    const comment = await Comment.findById(commentid);
-    const video = await Video.findById(id);
+    const { params :{id}, session} = req;
+    const comment = await Comment.findById(id);
+    const videoid = String(comment.video);
+    const video = await Video.findById(videoid);
     if(!comment){
         req.flash("error", "Comment Not Found.");
         return res.sendStatus(404);
@@ -160,11 +162,9 @@ export const removeComment = async (req, res) => {
         req.flash("error", "You are not this comment's owner");
         return res.sendStatus(404);
     }
-    await Comment.findByIdAndDelete(commentid);
-    const newarr = video.comments.filter((comment) => String(comment) !== String(commentid));
+    await Comment.findByIdAndDelete(id);
+    const newarr = video.comments.filter((comment) => String(comment) !== String(id));
     video.comments = newarr
     video.save();
     return res.sendStatus(200);
 };
-
-
