@@ -2,11 +2,13 @@ const { async } = require("regenerator-runtime");
 
 const videoContainer = document.getElementById("videoContainer");
 const form = document.getElementById("commentForm");
+const addCommentBtn = form.querySelector("button");
 const removeBtn = document.querySelector(".removeBtn");
 
 
 
-const addComment = (text) => {
+const addComment = async (text) => {
+    const videoId = videoContainer.dataset.videoid
     const videoComments = document.querySelector(".video__comments ul");
     const newComment = document.createElement("li");
     newComment.className = "video__comment";
@@ -17,6 +19,12 @@ const addComment = (text) => {
     const rmvBtn = document.createElement("span");
     rmvBtn.innerText = " ❌"
     rmvBtn.className = "removeBtn";
+    //
+    const response = await fetch(`/api/videos/${videoId}/comment`);
+    const data = await response.json();
+    const commentid = data[0];
+    rmvBtn.dataset.commentid = commentid;
+    //
     rmvBtn.addEventListener("click", handleRemoveComment);
     newComment.appendChild(icon);
     newComment.appendChild(span);
@@ -52,9 +60,6 @@ const handleRemoveComment = async (event) => {
     const videoId = videoContainer.dataset.videoid
     const child = event.target.parentElement;
     const commentid = event.target.dataset.commentid;
-    if(!commentid){
-        return child.remove();
-    }
     const response = await fetch(`/api/videos/${videoId}/commentRemove`, {
         method : "POST",
         headers : {
@@ -62,7 +67,13 @@ const handleRemoveComment = async (event) => {
         },
         body: JSON.stringify({commentid}),
     });
-    window.location.reload();
+    child.remove();
+};
+
+const handleKeyPress = (event) => {
+    if(event.keyCode === 13){
+        addCommentBtn.click();
+    }
 };
 
 if(form){
@@ -71,3 +82,4 @@ if(form){
 if(removeBtn){
     removeBtn.addEventListener("click", handleRemoveComment);
 }
+window.addEventListener("keyup", handleKeyPress);
