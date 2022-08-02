@@ -141,7 +141,7 @@ export const createComment = async (req, res) => {
     });
     video.comments.push(comment._id); // 만들 댓글의 ObjId를  비디오의 comments array에 넣어줌
     video.save(); //comments array에 변경사항 생겨서 저장해줌 !
-    res.sendStatus(201);
+    return res.status(201).json({ newCommentId: comment._id });
 };
 
 export const removeComment = async (req, res) => {
@@ -167,11 +167,4 @@ export const removeComment = async (req, res) => {
     return res.sendStatus(200);
 };
 
-export const getComment = async (req, res) => {
-    const { body , params: {id} } = req;
-    const video = await Video.findById(id);
-    if(!video){
-        res.sendStatus(404);
-    }
-    res.status(200).send(video.comments.reverse());
-};
+
