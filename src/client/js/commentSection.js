@@ -7,10 +7,10 @@ const removeBtn = document.querySelector(".removeBtn");
 
 
 
-const addComment = async (text) => {
-    const videoId = videoContainer.dataset.videoid
+const addComment = async (text, id) => {
     const videoComments = document.querySelector(".video__comments ul");
     const newComment = document.createElement("li");
+    newComment.dataset.id = id;
     newComment.className = "video__comment";
     const icon = document.createElement("i")
     icon.className = "fas fa-comment";
@@ -19,12 +19,6 @@ const addComment = async (text) => {
     const rmvBtn = document.createElement("span");
     rmvBtn.innerText = " ❌"
     rmvBtn.className = "removeBtn";
-    //
-    const response = await fetch(`/api/videos/${videoId}/comment`);
-    const data = await response.json();
-    const commentid = data[0];
-    rmvBtn.dataset.commentid = commentid;
-    //
     rmvBtn.addEventListener("click", handleRemoveComment);
     newComment.appendChild(icon);
     newComment.appendChild(span);
@@ -49,17 +43,17 @@ const handleSubmit = async (event) => {
             text,// text(value값)만 보내면 object형태가 아닌 string형식의 text만 보내는 것임.
         })
     });
-    const status = response.status;
-    if(status === 201){
-        addComment(text);
+    if(response.status === 201){
+        textarea.value ="";
+        const { newCommentId } = await response.json();
+        addComment(text, newCommentId);
     }
-    textarea.value ="";
 };
 
 const handleRemoveComment = async (event) => {
     const videoId = videoContainer.dataset.videoid
     const child = event.target.parentElement;
-    const commentid = event.target.dataset.commentid;
+    const commentid = child.dataset.id;
     const response = await fetch(`/api/videos/${videoId}/commentRemove`, {
         method : "POST",
         headers : {
