@@ -3,9 +3,7 @@ const { async } = require("regenerator-runtime");
 const videoContainer = document.getElementById("videoContainer");
 const form = document.getElementById("commentForm");
 const addCommentBtn = form.querySelector("button");
-const removeBtn = document.querySelector(".removeBtn");
-
-
+const removeBtns = document.querySelectorAll(".removeBtn");
 
 const addComment = async (text, id) => {
     const videoComments = document.querySelector(".video__comments ul");
@@ -45,23 +43,21 @@ const handleSubmit = async (event) => {
     });
     if(response.status === 201){
         textarea.value ="";
-        const { newCommentId } = await response.json();
+        const { newCommentId } = await response.json(); // 백엔드로부터 보내온 걸 쓸려면 이렇게 const data = await response.json()을 해야 쓸 수 있음.
         addComment(text, newCommentId);
     }
 };
 
 const handleRemoveComment = async (event) => {
-    const videoId = videoContainer.dataset.videoid
+    //const videoId = videoContainer.dataset.videoid
     const child = event.target.parentElement;
     const commentid = child.dataset.id;
-    const response = await fetch(`/api/videos/${videoId}/commentRemove`, {
-        method : "POST",
-        headers : {
-            "Content-Type" : "application/json",
-        },
-        body: JSON.stringify({commentid}),
+    const response = await fetch(`/api/comment/${commentid}/remove`, {
+        method : "DELETE",
     });
-    child.remove();
+    if(response.status === 200){
+        child.remove();
+    };
 };
 
 const handleKeyPress = (event) => {
@@ -73,7 +69,7 @@ const handleKeyPress = (event) => {
 if(form){
     form.addEventListener("submit", handleSubmit);
 } // form이 로그인 한 상태에서만 보이기 떄문임.
-if(removeBtn){
-    removeBtn.addEventListener("click", handleRemoveComment);
-}
+
+Array.from(removeBtns).forEach(btn => btn.addEventListener("click", handleRemoveComment)); // rmvBtn이 여러개니까 queryselectAll로 다 선언하고,(이 선언된 것의 type은 object이므로 이를 array로 바꾸고) 이 array를 forEach를 통해 각각의 btn에다가 이벤트 리스너 부여함.
+
 window.addEventListener("keyup", handleKeyPress);
