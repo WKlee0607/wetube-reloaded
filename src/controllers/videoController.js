@@ -158,5 +158,14 @@ export const removeComment = async (req, res) => {
     const newarr = video.comments.filter((comment) => String(comment) !== String(commentid));
     video.comments = newarr
     video.save();
-    res.sendStatus(200);
+    return res.sendStatus(200);
+};
+
+export const getComment = async (req, res) => {
+    const { body , params: {id} } = req;
+    const video = await Video.findById(id);
+    if(!video){
+        res.sendStatus(404);
+    }
+    res.status(200).send(video.comments.reverse());
 };
