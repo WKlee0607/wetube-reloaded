@@ -143,12 +143,22 @@ const handleEnded = () => {
     }); 
 };
 
+const focus = (event) => {
+    const eventTarget = event.target;
+    if(eventTarget === video){
+        window.addEventListener("keyup", handleSpacePress);
+    } else{
+        window.removeEventListener("keyup", handleSpacePress);
+    }
+    
+}
+
 playBtn.addEventListener("click", handlePlayClick);
 video.addEventListener("click", handlePlayClick);
 muteBtn.addEventListener("click", handleMute);
 volumeRange.addEventListener("input", handleVolumeInput);
 volumeRange.addEventListener("change", handleVolumeChange);
-video.addEventListener("loadedmetadata", handleLoadedMetadata);
+video.addEventListener("loadeddata", handleLoadedMetadata);
 video.addEventListener("timeupdate", handleTimeUpdate);
 video.addEventListener("ended", handleEnded);
 timeline.addEventListener("input", handleTimelineChange);
@@ -156,4 +166,4 @@ timeline.addEventListener("change", handleTimelineSet);
 fullScreenBtn.addEventListener("click", handleFullscreen);
 videoContainer.addEventListener("mousemove", handelMouseMove);
 videoContainer.addEventListener("mouseleave", handleMouseLeave);
-window.addEventListener("keyup", handleSpacePress);
+window.addEventListener("pointerdown", focus);
