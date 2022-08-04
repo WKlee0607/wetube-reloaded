@@ -146,7 +146,7 @@ export const createComment = async (req, res) => {
 
 // 내가 만든 controller
 export const removeComment = async (req, res) => {
-    const { params :{id}, session} = req;
+    const { params :{id}, session:{user : {_id}}} = req;
     const comment = await Comment.findById(id);
     const videoid = String(comment.video);
     const video = await Video.findById(videoid);
@@ -158,7 +158,7 @@ export const removeComment = async (req, res) => {
         req.flash("error", "Video Not Found.");
         return res.sendStatus(404);
     }
-    if(String(comment.owner) !== session.user._id){
+    if(String(comment.owner) !== String(_id)){
         req.flash("error", "You are not this comment's owner");
         return res.sendStatus(404);
     }
@@ -166,5 +166,21 @@ export const removeComment = async (req, res) => {
     const newarr = video.comments.filter((comment) => String(comment) !== String(id));
     video.comments = newarr
     video.save();
+    return res.sendStatus(200);
+};
+
+export const editComment = async (req, res) => {
+    const {body, params:{id}, session:{user : {_id}}} = req;
+    const comment = await Comment.findById(id);
+    if(!comment){
+        req.flash("error", "Comment Not Found.");
+        return res.sendStatus(404);
+    }
+    if(String(comment.owner) !== String(_id)){
+        req.flash("error", "You are not this comment's owner");
+        return res.sendStatus(404);
+    }
+    comment.text = body.text;
+    comment.save();
     return res.sendStatus(200);
 };
