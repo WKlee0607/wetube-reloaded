@@ -31,7 +31,7 @@ block content
             each comment in video.comments.reverse()
                li.video__comment(data-id=comment._id)
                     i.fas.fa-comment
-                    span  #{comment.text}
+                    span #{comment.text}
                     if (String(loggedInUser._id) === String(comment.owner))
                         span.removeBtn  ❌
                         span.editBtn  ✏️

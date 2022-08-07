@@ -15,7 +15,7 @@ const addComment = async (text, id) => {
     const icon = document.createElement("i")
     icon.className = "fas fa-comment";
     const span = document.createElement("span");
-    span.innerText = ` ${text}`;
+    span.innerText = `${text}`;
     const rmvBtn = document.createElement("span");
     rmvBtn.innerText = " ❌"
     rmvBtn.className = "removeBtn";

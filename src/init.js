@@ -1,3 +1,4 @@
+import  "regenerator-runtime/runtime.js" ;
 import "dotenv/config";
 //console.log(process.env);
 import "./db";
