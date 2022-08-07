@@ -1,7 +1,8 @@
 import mongoose from "mongoose";
 
 mongoose.connect(process.env.DB_URL, {//mongoDB의 url서버에 연결해준 것임.
-   
+    useNewUrlParser:true,
+    useUnifiedTopology:true,
 });
 
 const db = mongoose.connection;//mongoose가 mongoDB에 대한 connection 접근을 줌.
