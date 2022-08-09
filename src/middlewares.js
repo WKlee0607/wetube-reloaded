@@ -2,8 +2,9 @@ import multer from "multer";
 import multerS3 from "multer-s3";
 import aws from "aws-sdk";
 import { async } from "regenerator-runtime";
+import Video from "./models/Video";
 
-const s3 = new aws.S3({//aws.S3에 access Key, secret Key를 전달해주는 것임.
+export const s3 = new aws.S3({//aws.S3에 access Key, secret Key를 전달해주는 것임.
     credentials: {
         accessKeyId: process.env.AWS_ID,
         secretAccessKey: process.env.AWS_SECRET
@@ -87,3 +88,20 @@ export const s3DeleteAvatar = (req, res, next) => {
     })
     next();
 };
+
+export const s3DeleteVideo = async (req, res, next) => {
+    const {session: {user: {_id}}, params:{id}} = req;
+    const video = await Video.findById(id);
+    if(String(video.owner) !== String(_id)){
+        return next();
+    }
+    s3.deleteObject({
+        Bucket:"wkitube",
+        Key: `videos/${id}`
+    },(err, data) => {
+        if(err){
+            throw err;
+        }
+        console.log("s3 deleteObject", data);
+    })
+}
