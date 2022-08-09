@@ -56,7 +56,7 @@ export const postEdit = async (req, res) => {//post를 하면 mongoDB 내의 값
 
 export const getUpload = (req,res) => {
     return res.render("upload",{pageTitle:"Upload Video"});
-}
+};
 
 export const postUpload = async(req,res) => {
     const {user : {_id}} = req.session;
