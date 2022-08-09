@@ -95,9 +95,9 @@ export const s3DeleteVideo = async (req, res, next) => {
     if(String(video.owner) !== String(_id)){
         return next();
     }
-    s3.deleteObject({
+    s3.deleteObjects({
         Bucket:"wkitube",
-        Key: `videos/${video.fileUrl.split("/")[4]}`,
+        Objects: [{Key: `videos/${video.fileUrl.split("/")[4]}`},{Key: `videos/${video.thumbUrl.split("/")[4]}`}],
     },(err, data) => {
         if(err){
             throw err;
@@ -105,4 +105,4 @@ export const s3DeleteVideo = async (req, res, next) => {
         console.log("s3 deleteObject", data);
     })
     next();
-}
+};
