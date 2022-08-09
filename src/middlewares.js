@@ -104,4 +104,5 @@ export const s3DeleteVideo = async (req, res, next) => {
         }
         console.log("s3 deleteObject", data);
     })
+    next();
 }
