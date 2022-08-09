@@ -3,7 +3,6 @@ import Video from "../models/Video"
 import fetch from "cross-fetch";
 import bcrypt from "bcrypt";
 import session from "express-session";
-import { s3DeleteAvatar } from "../middlewares";
 
 export const getJoin = (req, res) => res.render("join",{pageTitle:"Join"});
 export const postJoin = async(req, res) => {
@@ -138,7 +137,6 @@ export const getEdit = (req, res) => {
 export const postEdit = async (req, res) => {
     const { session: {user: {_id, avatarUrl}}, body: { name, email, username, location}, file} = req;//여기서 body는 업데이트 된 정보.
     //onsole.log(file); 없으면 undefined로 뜰 것임
-    s3DeleteAvatar();
     if(req.session.user.email !== email || req.session.user.username !== username){
         const existEmail = await User.exists({email});
         const existUsername = await User.exists({username});
