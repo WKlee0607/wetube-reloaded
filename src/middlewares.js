@@ -9,10 +9,19 @@ const s3 = new aws.S3({//aws.S3에 access Key, secret Key를 전달해주는 것
     }//여기에 쓰인 key name이 heroku와 동일해야함.
 });
 
-const multerUploader = multerS3({
+const isHeroku = process.env.NODE_ENV === "production";
+
+const s3ImageUploader = multerS3({
     s3: s3,
-    bucket: "wkitube",//bucket이름 적기
+    bucket: "wkitube/images",//bucket이름 적기/폴더명
     acl:"public-read",
+});
+
+const s3VideoUploader = multerS3({
+    s3: s3,
+    bucket: "wkitube/videos",//bucket이름 적기/폴더명
+    acl:"public-read",
+    contentType: multerS3.AUTO_CONTENT_TYPE, //ios 동영사 재생 ㄱㄴ
 });
 
 export const localsMiddleware = (req, res, next) => {
@@ -20,6 +29,7 @@ export const localsMiddleware = (req, res, next) => {
     res.locals.loggedIn = Boolean(req.session.loggedIn);//local안에 session의 loggedIn을 넣어줌
     res.locals.loggedInUser = req.session.user || {};
     res.locals.siteName = "Wetube";
+    res.locals.isHeroku = isHeroku;
     //console.log(res.locals)
     next();
 };
@@ -47,7 +57,7 @@ export const avatarUpload = multer({
     limits:{//limits: Limits of the uploaded data
         fileSize: 3000000,//(단위: byte)
     },
-    storage: multerUploader, 
+    storage: isHeroku ? s3ImageUploader : undefined, //heroku에 따라 storage의 정의 여부가 바뀜. 만약 undefined가 되면 파일은 dest로 갈 것임.
 });
 
 export const videoUpload = multer({ 
@@ -55,5 +65,5 @@ export const videoUpload = multer({
     limits:{
         fileSize: 10000000,
     },
-    storage: multerUploader,
+    storage: isHeroku ? s3VideoUploader : undefined, //heroku에 따라 storage의 정의 여부가 바뀜. 만약 undefined가 되면 파일은 dest로 갈 것임.
 });
