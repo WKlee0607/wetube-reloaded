@@ -69,12 +69,15 @@ export const videoUpload = multer({
 });
 
 export const s3DeleteAvatar = (req, res, next) => {
-    if(!req.file){
+    const {session: {user: {avatarUrl}}, file} = req;
+    const isHeroku = process.env.NODE_ENV === "production";
+    const avatar = file ? (isHeroku ? file.location : file.path) :avatarUrl;
+    if(avatarUrl === avatar){
         return next();
     }
     s3.deleteObject({
         Bucket:"wkitube",
-        Key: `images/${req.session.user.avatarUrl.split("/")[4]}`
+        Key: `images/${avatarUrl.split("/")[4]}`
     },(err, data) => {
         if(err){
             throw err;
