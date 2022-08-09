@@ -67,3 +67,4 @@ export const videoUpload = multer({
     },
     storage: isHeroku ? s3VideoUploader : undefined, //heroku에 따라 storage의 정의 여부가 바뀜. 만약 undefined가 되면 파일은 dest로 갈 것임.
 });
+
