@@ -69,21 +69,21 @@ export const videoUpload = multer({
     storage: isHeroku ? s3VideoUploader : undefined, //heroku에 따라 storage의 정의 여부가 바뀜. 만약 undefined가 되면 파일은 dest로 갈 것임.
 });
 
-export const s3DeleteAvatar = async (req, res, next) => {
+export const s3DeleteAvatar = (req, res, next) => {
     const {session: {user: {avatarUrl}}, file} = req;
     const isHeroku = process.env.NODE_ENV === "production";
     const avatar = file ? (isHeroku ? file.location : file.path) :avatarUrl;
     if(avatarUrl === avatar){
         return next();
     }
-    try{
-        await s3.deleteObjectCommand({
-            Bucket:"wkitube",
-            Key: `images/${avatarUrl.split("/")[4]}`
-        })
-        next();
-    }
-    catch(err){
-        console.log("Error", err);
-    }
+    s3.deleteObject({
+        Bucket:"wkitube",
+        Key: `images/${avatarUrl.split("/")[4]}`
+    },(err, data) => {
+        if(err){
+            throw err;
+        }
+        console.log("s3 deleteObject", data);
+    })
+    next();
 };
