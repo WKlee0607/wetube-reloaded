@@ -97,7 +97,9 @@ export const s3DeleteVideo = async (req, res, next) => {
     }
     s3.deleteObjects({
         Bucket:"wkitube",
-        Objects: [{Key: `videos/${video.fileUrl.split("/")[4]}`},{Key: `videos/${video.thumbUrl.split("/")[4]}`}],
+        Delete: {
+            Objects: [{Key: `videos/${video.fileUrl.split("/")[4]}`},{Key: `videos/${video.thumbUrl.split("/")[4]}`}],
+        }, 
     },(err, data) => {
         if(err){
             throw err;
