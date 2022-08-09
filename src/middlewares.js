@@ -1,6 +1,7 @@
 import multer from "multer";
 import multerS3 from "multer-s3";
 import aws from "aws-sdk";
+import { async } from "regenerator-runtime";
 
 const s3 = new aws.S3({//aws.S3에 access Key, secret Key를 전달해주는 것임.
     credentials: {
@@ -68,22 +69,21 @@ export const videoUpload = multer({
     storage: isHeroku ? s3VideoUploader : undefined, //heroku에 따라 storage의 정의 여부가 바뀜. 만약 undefined가 되면 파일은 dest로 갈 것임.
 });
 
-export const s3DeleteAvatar = (req, res, next) => {
+export const s3DeleteAvatar = async (req, res, next) => {
     const {session: {user: {avatarUrl}}, file} = req;
     const isHeroku = process.env.NODE_ENV === "production";
     const avatar = file ? (isHeroku ? file.location : file.path) :avatarUrl;
     if(avatarUrl === avatar){
         return next();
     }
-    s3.deleteObject({
-        Bucket:"wkitube",
-        Key: `images/${avatarUrl.split("/")[4]}`
-    },(err, data) => {
-        if(err){
-            throw err;
-        }
-        console.log("s3 deleteObject", data);
+    try{
+        await s3.deleteObject({
+            Bucket:"wkitube",
+            Key: `images/${avatarUrl.split("/")[4]}`
+        })
+        next();
     }
-    )
-    next();
+    catch(err){
+        console.log("Error", err);
+    }
 };
