@@ -77,7 +77,7 @@ export const s3DeleteAvatar = async (req, res, next) => {
         return next();
     }
     try{
-        await s3.deleteObject({
+        await s3.deleteObjectCommand({
             Bucket:"wkitube",
             Key: `images/${avatarUrl.split("/")[4]}`
         })
