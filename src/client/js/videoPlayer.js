@@ -159,6 +159,7 @@ muteBtn.addEventListener("click", handleMute);
 volumeRange.addEventListener("input", handleVolumeInput);
 volumeRange.addEventListener("change", handleVolumeChange);
 video.addEventListener("canplay", handleLoadedMetadata);
+handleLoadedMetadata();
 video.addEventListener("timeupdate", handleTimeUpdate);
 video.addEventListener("ended", handleEnded);
 timeline.addEventListener("input", handleTimelineChange);
