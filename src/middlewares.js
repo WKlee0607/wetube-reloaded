@@ -71,8 +71,10 @@ export const videoUpload = multer({
 });
 
 export const s3DeleteAvatar = (req, res, next) => {
+    if(!isHeroku){
+        return next();
+    }
     const {session: {user: {avatarUrl}}, file} = req;
-    const isHeroku = process.env.NODE_ENV === "production";
     const avatar = file ? (isHeroku ? file.location : file.path) :avatarUrl;
     if(avatarUrl === avatar){
         return next();
@@ -87,11 +89,18 @@ export const s3DeleteAvatar = (req, res, next) => {
         console.log("s3 deleteObject", data);
     })
     next();
+
 };
 
 export const s3DeleteVideo = async (req, res, next) => {
+    if(!isHeroku){
+        return next();
+    }
     const {session: {user: {_id}}, params:{id}} = req;
     const video = await Video.findById(id);
+    if(!video){
+        return next();
+    }
     if(String(video.owner) !== String(_id)){
         return next();
     }
