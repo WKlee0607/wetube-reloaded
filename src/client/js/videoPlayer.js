@@ -151,7 +151,7 @@ const focus = (event) => {
         window.removeEventListener("keyup", handleSpacePress);
     }
     
-}
+};
 
 playBtn.addEventListener("click", handlePlayClick);
 video.addEventListener("click", handlePlayClick);
@@ -168,3 +168,4 @@ fullScreenBtn.addEventListener("click", handleFullscreen);
 videoContainer.addEventListener("mousemove", handelMouseMove);
 videoContainer.addEventListener("mouseleave", handleMouseLeave);
 window.addEventListener("pointerdown", focus);
+

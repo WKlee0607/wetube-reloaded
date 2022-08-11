@@ -10,13 +10,13 @@ export const home = async(req,res) => {
 };
 
 export const watch = async(req,res) => {
-    const {id} = req.params;
+    const {params:{id}} = req;
     const video = await Video.findById(id).populate("owner").populate("comments");//Video에서 찾아도 되는 이유: 이 파일에 mongoose가 import돼 있으며, 이는  mongoDB와 이어져 있고 이를 이용해 Video model을 만들었으므로 자연스레 찾을 수 있게됨.
     if(!video){
         return res.render("404", { pageTitle: "Video not found." });
     }
     console.log(video);
-    return res.render("watch",{pageTitle : video.title, video});
+    return res.render("watch",{pageTitle : video.title, video });
 };
 
 
@@ -184,4 +184,28 @@ export const editComment = async (req, res) => {
     comment.text = body.text;
     comment.save();
     return res.sendStatus(200);
+};
+
+// video like 
+export const videoLike = async (req, res) => {
+    const {params:{id}, session:{user:{_id}}} = req;
+    const user = await User.findById(_id);
+    const video = await Video.findById(id);
+    const found = video.meta.likes.find((element) => element !== _id);
+    if(!user || !video){
+        req.flash("error", "video or user is not exists");
+        return res.sendStatus(404);
+    }
+    if(found){
+        user.likes.splice(user.likes.indexOf(id),1);
+        video.meta.likes.splice(video.meta.likes.indexOf(_id),1);
+        user.save();
+        video.save();
+        return res.sendStatus(204);
+    }
+    user.likes.push(id);
+    user.save();
+    video.meta.likes.push(_id);
+    video.save();
+    return res.status(200).json({likes : video.meta.likes});
 };

@@ -89,7 +89,6 @@ export const s3DeleteAvatar = (req, res, next) => {
         console.log("s3 deleteObject", data);
     })
     next();
-
 };
 
 export const s3DeleteVideo = async (req, res, next) => {
