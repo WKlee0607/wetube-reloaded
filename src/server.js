@@ -10,9 +10,9 @@ import videoRouter from "./routers/videoRouter";
 import apiRouter from "./routers/apiRouter";
 import { localsMiddleware } from "./middlewares";
 
-
 const app = express(); 
 const logger = morgan("dev");
+
 
 app.set("view engine","pug");
 app.set("views",process.cwd() + "/src/views");//process.cwd: 현재 작업중인 파일 위치.
@@ -36,14 +36,12 @@ app.get("/add-one",(req,res,next)=>{
     return res.send(`${req.session.id}`);
 });
 
+
 app.use((req, res, next) => {
     res.header("Cross-Origin-Embedder-Policy", "require-corp");
     res.header("Cross-Origin-Opener-Policy", "same-origin");
     next();
 });
-
-
-
 
 app.use(flash());
 app.use(localsMiddleware);
@@ -54,5 +52,6 @@ app.use("/",rootRouter);
 app.use("/videos",videoRouter);
 app.use("/users",userRouter);
 app.use("/api", apiRouter);
+
 
 export default app;

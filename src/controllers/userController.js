@@ -181,18 +181,20 @@ export const callbackKakaoLogin = async (req, res) => {
             headers: {
                 Authorization: `Bearer ${access_token}`,
                 "Content-type": "application/x-www-form-urlencoded;charset=utf-8",
-            }
+            },
+            secure_resource: true,
         })).json();
         const userData = userDataAll.kakao_account;
         let userEmail = userData.email;
         if(!userEmail){
             await fetch("https://kapi.kakao.com/v1/user/unlink", {
                 headers: {
+                    "Content-Type":"application/x-www-form-urlencoded",
                     Authorization: `Bearer ${access_token}`,
-                }
+                },
             });
             req.flash("error", "Please agree to collect your email");
-            return res.redirect("/login");
+            return res.status(404).redirect("/login");
         }
         let user = await User.findOne({ email: userData.email });// github에서 찾은 이메일을 우리의 DB에서 찾는것임.
         if(!user){

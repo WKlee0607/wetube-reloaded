@@ -4,9 +4,9 @@ import User from "../models/User"
 import { async } from "regenerator-runtime";
 
 export const home = async(req,res) => {
-        const videos = await Video.find({}).sort({createdAt:"desc"}).populate("owner");//await: 해당 코드가 끝날 때까지 다음 순서의 코드를 진행시키지 않음. 즉, 해당 코드를 기다려주는 역할을 함./ video.find: 모든 DB에 있는 모든 video를 찾음
-        console.log(videos);
-        return res.render("home",{pageTitle : "Home",videos});//videos를 db에서 받아옴.
+    const videos = await Video.find({}).sort({createdAt:"desc"}).populate("owner");//await: 해당 코드가 끝날 때까지 다음 순서의 코드를 진행시키지 않음. 즉, 해당 코드를 기다려주는 역할을 함./ video.find: 모든 DB에 있는 모든 video를 찾음
+    console.log(videos);
+    return res.render("home",{pageTitle : "Home",videos});//videos를 db에서 받아옴.
 };
 
 export const watch = async(req,res) => {
