@@ -68,7 +68,7 @@ export const callbackGithubLogin = async (req, res) => {
     const config = {
         client_id: process.env.GH_CLIENT,
         client_secret: process.env.GH_SECRET,
-        code: req.query.code,
+        code: req.query.code, // callback에서 준 코드를 받는 방법. query: parameter를 부르는 것.
     }
     const params = new URLSearchParams(config).toString();
     const finalUrl = `${baseUrl}?${params}`;//token을 가져오기 위한 url
@@ -86,7 +86,7 @@ export const callbackGithubLogin = async (req, res) => {
         const apiUrl = "https://api.github.com";//token을 이용해 Github API에 접근하는 url
         const userData = await ( await fetch(`${apiUrl}/user`, {
             headers: {
-                Authorization: `token ${access_token}`,
+                Authorization: `token ${access_token}`, // Authorization: 보호된 리소스에 대한 접근을 허용하여 서버로 User agent를 인증하는 자격증명을 보내는 역할을 합니다
             }
         })).json();
         //console.log(userData);
@@ -96,13 +96,13 @@ export const callbackGithubLogin = async (req, res) => {
                     Authorization: `token ${access_token}`,
                 },
             })
-        ).json();
+        ).json(); // github에 관해 여러 이메일들을 가져옴.
         const emailObj = emailData.find(//find: object들 중, 원하는 object찾을 때 이용.
             (email) => email.primary === true && email.verified === true
           );
         if(!emailObj){
             // set notification
-            return res.redirect("/login");//나중에 notification도 보내줄 것임. -> notification: user가 /login으로 redirect하게 해주고, user가 /login에서 에러 메시지를 보게 햐줄것임.
+            return res.status(404).redirect("/login");//나중에 notification도 보내줄 것임. -> notification: user가 /login으로 redirect하게 해주고, user가 /login에서 에러 메시지를 보게 햐줄것임.
         }
         let user = await User.findOne({ email: emailObj.email });// github에서 찾은 이메일을 우리의 DB에서 찾는것임.
         if(!user){
@@ -123,7 +123,99 @@ export const callbackGithubLogin = async (req, res) => {
     } else{
         return res.redirect("/login");//나중에 notification도 보내줄 것임. -> notification: user가 /login으로 redirect하게 해주고, user가 /login에서 에러 메시지를 보게 햐줄것임.
     }
-}
+};
+
+//kakao login
+
+export const startKakaoLogin = (req, res) => {
+    const baseUrl = "https://kauth.kakao.com/oauth/authorize";
+    const host = req.host
+    let redirect_uri = ""
+    if(host === "localhost"){
+        redirect_uri = "http://localhost:4000/users/kakao/callback";
+    }
+    else {
+        redirect_uri = "https://itube-by-wk.herokuapp.com/users/kakao/callback";
+    }
+    const config = {
+        response_type:"code",
+        client_id:process.env.KAKAO_CLIENT,
+        redirect_uri:redirect_uri,
+    };
+    const params = new URLSearchParams(config).toString();
+    const finalUrl = `${baseUrl}?${params}`;
+    return res.redirect(finalUrl);
+};
+
+export const callbackKakaoLogin = async (req, res) => {
+    const baseUrl = "https://kauth.kakao.com/oauth/token";
+    const host = req.host
+    let redirect_uri = ""
+    if(host === "localhost"){
+        redirect_uri = "http://localhost:4000/users/kakao/callback";
+    }
+    else {
+        redirect_uri = "https://itube-by-wk.herokuapp.com/users/kakao/callback";
+    }
+    const config = {
+        grant_type:"authorization_code",
+        client_id:process.env.KAKAO_CLIENT,
+        client_secret: process.env.KAKAO_SECRET,
+        redirect_url:redirect_uri,
+        code: req.query.code,
+    };
+    const params = new URLSearchParams(config).toString();
+    const finalUrl = `${baseUrl}?${params}`;
+    const tokenRequest = await (
+        await fetch(finalUrl, {
+            method:"POST",
+            headers: {
+                "Content-Type": "application/x-www-form-urlencoded;charset=utf-8",
+            }
+        })
+        ).json();
+    if("access_token" in tokenRequest){
+        const {access_token} = tokenRequest;
+        const apiUrl = "https://kapi.kakao.com/v2/user/me";
+        const userDataAll = await (await fetch(`${apiUrl}`, {
+            headers: {
+                Authorization: `Bearer ${access_token}`,
+                "Content-type": "application/x-www-form-urlencoded;charset=utf-8",
+            }
+        })).json();
+        const userData = userDataAll.kakao_account;
+        let userEmail = userData.email;
+        if(!userEmail){
+            await fetch("https://kapi.kakao.com/v1/user/unlink", {
+                headers: {
+                    Authorization: `Bearer ${access_token}`,
+                }
+            });
+            req.flash("error", "Please agree to collect your email");
+            return res.redirect("/login");
+        }
+        let user = await User.findOne({ email: userData.email });// github에서 찾은 이메일을 우리의 DB에서 찾는것임.
+        if(!user){
+            user = await User.create({
+                avatarUrl: userData.profile.profile_image_url,
+                name: userData.profile.nickname ? userData.profile.nickname : "Unknown",
+                username: userData.profile.nickname ? userData.profile.nickname : "Unknown",
+                email: userEmail ? userEmail : "Unknown",
+                password: "",
+                socialOnly: true,//socialOnly:true ->  소셜 계정으로 만들어진 계정이란 뜻임. 따라서 이 사람은 password가 없으므로 login form을 이용할 수 없음.
+                location: "Unknown",
+            });
+        }
+        req.session.loggedIn = true;
+        req.session.user = user;
+        return res.redirect("/");
+    } else {
+        return res.redirect("/login");
+    }
+};
+
+
+//
 
 export const logout = (req, res) => {
     req.session.destroy();

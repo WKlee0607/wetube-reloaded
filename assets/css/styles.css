@@ -194,6 +194,9 @@ input[type=submit]:disabled,
   background-color: transparent;
   color: azure;
 }
+.social-login .social__btn--kakao {
+  margin-top: 10px;
+}
 
 #videoContainer {
   width: 100%;
