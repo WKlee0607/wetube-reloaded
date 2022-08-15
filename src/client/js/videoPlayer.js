@@ -158,8 +158,8 @@ video.addEventListener("click", handlePlayClick);
 muteBtn.addEventListener("click", handleMute);
 volumeRange.addEventListener("input", handleVolumeInput);
 volumeRange.addEventListener("change", handleVolumeChange);
-video.addEventListener("loadeddata", handleLoadedMetadata);
-handleLoadedMetadata();
+video.addEventListener("canplay", handleLoadedMetadata);
+handleLoadedMetadata(); // localhost에서는 video controller가 보이지 않는 버그가 있지만, heroku앱에서는 video controller가 잘 돌아감 -> 이걸 하는 이유: heroku앱에서 동영상 길이가 표시되지 않아서.
 video.addEventListener("timeupdate", handleTimeUpdate);
 video.addEventListener("ended", handleEnded);
 timeline.addEventListener("input", handleTimelineChange);
