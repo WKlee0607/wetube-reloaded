@@ -43,6 +43,7 @@ app.use((req, res, next) => {
     next();
 });
 
+
 app.use(flash());
 app.use(localsMiddleware);
 app.use("/uploads", express.static("uploads"));

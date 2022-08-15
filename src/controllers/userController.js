@@ -4,6 +4,9 @@ import fetch from "cross-fetch";
 import bcrypt from "bcrypt";
 import session from "express-session";
 
+import aws from "aws-sdk";
+import {s3} from "../middlewares"
+
 export const getJoin = (req, res) => res.render("join",{pageTitle:"Join"});
 export const postJoin = async(req, res) => {
     //console.log(req.body);
@@ -199,7 +202,7 @@ export const callbackKakaoLogin = async (req, res) => {
         let user = await User.findOne({ email: userData.email });// github에서 찾은 이메일을 우리의 DB에서 찾는것임.
         if(!user){
             user = await User.create({
-                avatarUrl: userData.profile.profile_image_url,
+                avatarUrl: "",
                 name: userData.profile.nickname ? userData.profile.nickname : "Unknown",
                 username: userData.profile.nickname ? userData.profile.nickname : "Unknown",
                 email: userEmail ? userEmail : "Unknown",
