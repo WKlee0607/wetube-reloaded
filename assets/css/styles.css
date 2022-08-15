@@ -203,6 +203,7 @@ input[type=submit]:disabled,
   position: relative;
   display: flex;
   align-items: center;
+  justify-content: center;
   flex-direction: column;
 }
 #videoContainer video {
@@ -225,6 +226,7 @@ input[type=submit]:disabled,
 #videoContainer .videoControls .videoControls__timeline {
   width: 100%;
   margin: 10px 0px;
+  z-index: 2;
 }
 #videoContainer .videoControls .videoControls__bottom {
   width: 99%;
@@ -258,7 +260,7 @@ input[type=submit]:disabled,
 #videoContainer .videoControls input[type=range] {
   width: 100%;
   -webkit-appearance: none;
-  background: #0A0F0D;
+  background-color: rgb(31, 31, 31);
   height: 10px;
   opacity: 0.7;
   border-radius: 5px;
@@ -268,7 +270,7 @@ input[type=submit]:disabled,
   width: 13px;
   height: 13px;
   border-radius: 6px;
-  background: white;
+  background: red;
   cursor: pointer;
 }
 

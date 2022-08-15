@@ -3,6 +3,7 @@
     position: relative;
     display: flex;
     align-items: center;
+    justify-content: center;
     flex-direction: column;
     video{
         width: 95%;
@@ -23,7 +24,7 @@
         .videoControls__timeline{
             width: 100%;
             margin: 10px 0px;
-            
+            z-index: 2;
         }
         .videoControls__bottom{
             width: 99%;
@@ -57,7 +58,7 @@
         input[type="range"] {
             width:100%;
     	    -webkit-appearance: none;
-	        background: #0A0F0D;
+            background-color: rgb(31, 31, 31);
             height: 10px;
             opacity: 0.7;
             border-radius: 5px;
@@ -66,7 +67,7 @@
                 width: 13px;
                 height: 13px;
                 border-radius: 6px;
-                background: white;
+                background: red;
                 cursor: pointer;
             }
         }
