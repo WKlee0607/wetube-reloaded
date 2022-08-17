@@ -8,7 +8,7 @@ const currenTime = document.getElementById("currenTime");
 const totalTime = document.getElementById("totalTime");
 const progressBar = document.querySelector(".progressBar");
 const progress = document.querySelector(".progress");
-const proprogressFilled = document.querySelector(".progress__filled");
+const proprogressFilled = document.querySelector(".progressFilled");
 
 const fullScreenBtn = document.getElementById("fullScreen");
 const fullScreenIcon = fullScreenBtn.querySelector("i");
@@ -84,7 +84,7 @@ const handleTimeUpdate = () => {
     const percent = (video.currentTime / video.duration) * 100;
     progress.style.width = `${percent}%`
     if(progress.style.width === "100%"){
-        playBtnIcon.classList ="fas fa-play";
+        playBtnIcon.classList ="fas fa-redo";
     }
 };
 

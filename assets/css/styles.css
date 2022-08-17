@@ -225,12 +225,21 @@ input[type=submit]:disabled,
 }
 #videoContainer .videoControls .progressBar {
   position: absolute;
+  display: flex;
   z-index: 2;
   width: 100%;
   bottom: 25px;
   height: 7px;
   background-color: rgba(31, 31, 31, 0.7);
   cursor: pointer;
+}
+#videoContainer .videoControls .progressBar:hover {
+  transition: 0.1s linear;
+  height: 10px;
+}
+#videoContainer .videoControls .progressBar:hover .progress {
+  transition: 0.1s linear;
+  height: 10px;
 }
 #videoContainer .videoControls .progressBar .progress {
   width: 0%;
@@ -358,6 +367,58 @@ input[type=submit]:disabled,
 .upload__container .upload__video video {
   max-width: 100%;
   margin-bottom: 10px;
+}
+
+.top__box {
+  padding: 10px 0;
+  margin: 0 3%;
+}
+.top__box .top__box-hashtags {
+  font-size: 12px;
+}
+.top__box .top__box-title {
+  margin-top: 5px;
+  font-size: 30px;
+}
+
+.middle__box {
+  margin: 2% 3%;
+  display: flex;
+  justify-content: space-between;
+  font-size: 15px;
+}
+.middle__box .like {
+  cursor: pointer;
+}
+.middle__box .like i {
+  opacity: 0.8;
+  margin: 0 2px;
+}
+.middle__box .share {
+  cursor: pointer;
+}
+
+.middle__hr {
+  width: 95%;
+  border-color: #626262;
+}
+
+#commentForm {
+  max-width: none;
+  border: none;
+  background-color: transparent;
+  display: flex;
+  padding: 18px;
+}
+#commentForm textarea {
+  height: 30px;
+  width: 97%;
+  background-color: transparent;
+  color: white;
+  font-size: 18px;
+}
+#commentForm button {
+  background-color: grey;
 }
 
 .video__comments {

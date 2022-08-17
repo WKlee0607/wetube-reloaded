@@ -26,21 +26,29 @@ block content
                         span#fullScreen
                             i.fas.fa-expand
     if loggedIn
-        div.comment__like-box
-            div.like__box
-                span.like Like
-                    if video.meta.likes.find((id) => id !== String(loggedInUser._id))
-                        i.fas.fa-thumbs-up
-                    else 
-                        i.far.fa-thumbs-up
-                    span.likeNum=video.meta.likes.length
-            div.video__add-comments
-                form.video__comment-form#commentForm
-                    textarea(cols="30", rows="10", placeholder="Write a nice comment..")
-                    button Add Comment
-                if String(video.owner._id) === String(loggedInUser._id)
-                    div.video__delete
-                        a(href=`/videos/${video._id}/delete`) Delete Video
+        div.top__box
+            div.top__box-hashtags=String(video.hashtags).replace(/,/g," ")
+            div.top__box-title=video.title
+        div.middle__box
+            div.like Like
+                if video.meta.likes.find((id) => id !== String(loggedInUser._id))
+                    i.fas.fa-thumbs-up 
+                else 
+                    i.far.fa-thumbs-up
+                span.likeNum=video.meta.likes.length
+            div.share__box
+                div.share Share 
+                    i.fas.fa-share
+        hr.middle__hr
+        div.owner
+        hr.middle__hr
+        div.video__add-comments
+            form.video__comment-form#commentForm
+                textarea(cols="30", rows="10", placeholder="Write a nice comment..")
+                button Add Comment
+            if String(video.owner._id) === String(loggedInUser._id)
+                div.video__delete
+                    a(href=`/videos/${video._id}/delete`) Delete Video
     else 
         span Like
             i.far.fa-thumbs-up

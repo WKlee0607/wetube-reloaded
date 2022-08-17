@@ -2,10 +2,12 @@ const { async } = require("regenerator-runtime");
 
 const videoContainer = document.getElementById("videoContainer");
 const form = document.getElementById("commentForm");
+const textarea = form.querySelector("textarea");
 const addCommentBtn = form.querySelector("button");
 const removeBtns = document.querySelectorAll(".removeBtn");
-
 const editBtns = document.querySelectorAll(".editBtn");
+
+addCommentBtn.disabled = true;
 
 const addComment = async (text, id) => {
     const videoComments = document.querySelector(".video__comments ul");
@@ -29,6 +31,8 @@ const addComment = async (text, id) => {
     newComment.appendChild(rmvBtn);
     newComment.appendChild(editbtn);
     videoComments.prepend(newComment);
+    addCommentBtn.disabled = true;
+    addCommentBtn.style.backgroundColor = "grey";
 };
 
 const handleSubmit = async (event) => {
@@ -139,9 +143,22 @@ const showEditComment = (event) => {
     input.focus();
 };
 
+const handleTextAndBtn = (event) => {
+    if(!event.target.value){
+        addCommentBtn.disabled = true;
+        addCommentBtn.style.backgroundColor = "grey";
+    }else {
+        addCommentBtn.disabled = false;
+        addCommentBtn.style.backgroundColor = "#3DA6FF";
+    }
+}
+
 if(editBtns){
     Array.from(editBtns).forEach((editBtn) => editBtn.addEventListener("click", showEditComment)); 
 };
+
+
+textarea.addEventListener("input", handleTextAndBtn);
 
 
     
