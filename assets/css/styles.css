@@ -223,10 +223,21 @@ input[type=submit]:disabled,
 #videoContainer .videoControls.showing {
   opacity: 1;
 }
-#videoContainer .videoControls .videoControls__timeline {
-  width: 100%;
-  margin: 10px 0px;
+#videoContainer .videoControls .progressBar {
+  position: absolute;
   z-index: 2;
+  width: 100%;
+  bottom: 25px;
+  height: 7px;
+  background-color: rgba(31, 31, 31, 0.7);
+  cursor: pointer;
+}
+#videoContainer .videoControls .progressBar .progress {
+  width: 0%;
+  height: 7px;
+  position: relative;
+  display: flex;
+  background-color: #ff1300;
 }
 #videoContainer .videoControls .videoControls__bottom {
   width: 99%;
@@ -252,12 +263,6 @@ input[type=submit]:disabled,
 }
 #videoContainer .videoControls .videoControls__bottom .videoControls__right .videoControls__volume #volume {
   margin: 0 15px;
-}
-#videoContainer .videoControls i {
-  font-size: 18px;
-  opacity: 0.8;
-}
-#videoContainer .videoControls input[type=range] {
   width: 100%;
   -webkit-appearance: none;
   background-color: rgb(31, 31, 31);
@@ -265,12 +270,17 @@ input[type=submit]:disabled,
   opacity: 0.7;
   border-radius: 5px;
 }
-#videoContainer .videoControls input[type=range]::-webkit-slider-thumb {
+#videoContainer .videoControls .videoControls__bottom .videoControls__right .videoControls__volume #volume::-webkit-slider-thumb {
   -webkit-appearance: none;
   width: 13px;
   height: 13px;
   border-radius: 6px;
   background: red;
+  cursor: pointer;
+}
+#videoContainer .videoControls i {
+  font-size: 18px;
+  opacity: 0.8;
   cursor: pointer;
 }
 

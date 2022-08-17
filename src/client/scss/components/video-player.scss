@@ -21,10 +21,21 @@
         left: 0;
         right: 0;
         margin: 0 auto;
-        .videoControls__timeline{
-            width: 100%;
-            margin: 10px 0px;
+        .progressBar{
+            position :absolute;
             z-index: 2;
+            width: 100%;
+            bottom: 25px;
+            height: 7px;
+            background-color: rgb(31, 31, 31, 0.7);
+            cursor: pointer;
+            .progress {
+                width: 0%;
+                height: 7px;
+                position: relative;
+                display: flex;
+                background-color: $red;
+            }
         }
         .videoControls__bottom{
             width: 99%;
@@ -47,6 +58,20 @@
                     margin: 0px 15px;
                     #volume {
                         margin: 0 15px;
+                        width:100%;
+                        -webkit-appearance: none;
+                        background-color: rgb(31, 31, 31);
+                        height: 10px;
+                        opacity: 0.7;
+                        border-radius: 5px;
+                        &::-webkit-slider-thumb {
+                            -webkit-appearance: none;
+                            width: 13px;
+                            height: 13px;
+                            border-radius: 6px;
+                            background: red;
+                            cursor: pointer;
+                        }
                     }
                 }
             }
@@ -54,22 +79,8 @@
         i {
             font-size: 18px;
             opacity: 0.8;
+            cursor: pointer;
         }
-        input[type="range"] {
-            width:100%;
-    	    -webkit-appearance: none;
-            background-color: rgb(31, 31, 31);
-            height: 10px;
-            opacity: 0.7;
-            border-radius: 5px;
-            &::-webkit-slider-thumb {
-                -webkit-appearance: none;
-                width: 13px;
-                height: 13px;
-                border-radius: 6px;
-                background: red;
-                cursor: pointer;
-            }
-        }
+        
     }
 } 

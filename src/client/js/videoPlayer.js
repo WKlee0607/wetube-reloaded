@@ -6,7 +6,10 @@ const muteBtnIcon = muteBtn.querySelector("i");
 const volumeRange = document.getElementById("volume");
 const currenTime = document.getElementById("currenTime");
 const totalTime = document.getElementById("totalTime");
-const timeline = document.getElementById("timeline");
+const progressBar = document.querySelector(".progressBar");
+const progress = document.querySelector(".progress");
+const proprogressFilled = document.querySelector(".progress__filled");
+
 const fullScreenBtn = document.getElementById("fullScreen");
 const fullScreenIcon = fullScreenBtn.querySelector("i");
 const videoContainer = document.getElementById("videoContainer");
@@ -73,31 +76,22 @@ const formatTime = (seconds) => {
 
 const handleLoadedMetadata = () => {
     totalTime.innerText = formatTime(Math.floor(video.duration));
-    timeline.max = Math.floor(video.duration);
+    //timeline.max = Math.floor(video.duration);
 };
 
 const handleTimeUpdate = () => {
     currenTime.innerText = formatTime(Math.floor(video.currentTime));
-    timeline.value = Math.floor(video.currentTime);// 비디오의 현재 진행시간을 타임라인에 나타내줌.
-    if(Number(timeline.value) === Math.floor(video.duration)){
+    const percent = (video.currentTime / video.duration) * 100;
+    progress.style.width = `${percent}%`
+    if(progress.style.width === "100%"){
         playBtnIcon.classList ="fas fa-play";
     }
 };
 
-const handleTimelineChange = (event) => {
-    const {target: { value },} = event;
-    if (!setVideoPlayStatus) {
-    videoPlayStatus = video.paused ? false : true;
-    setVideoPlayStatus = true;
-    }
-    video.pause();
-    video.currentTime = value;
+const scrub = (event) => {
+    const scrubTime = (event.offsetX / progressBar.offsetWidth) * video.duration;
+    video.currentTime = scrubTime
 };
-
-const handleTimelineSet = () => {
-    videoPlayStatus ? video.play() : video.pause();
-    setVideoPlayStatus = false;
-    };
 
 const handleFullscreen = () => {
     const fullscreen = document.fullscreenElement;//현재 fullscreen인 개체 보여줌.
@@ -165,9 +159,30 @@ if(video.src.split("/")[3] === "uploads"){
 }
 video.addEventListener("timeupdate", handleTimeUpdate);
 video.addEventListener("ended", handleEnded);
-timeline.addEventListener("input", handleTimelineChange);
-timeline.addEventListener("change", handleTimelineSet);
+progressBar.addEventListener("click", scrub);
 fullScreenBtn.addEventListener("click", handleFullscreen);
 videoContainer.addEventListener("mousemove", handelMouseMove);
 videoContainer.addEventListener("mouseleave", handleMouseLeave);
 window.addEventListener("pointerdown", focus);
+
+/*삭제 항목
+
+const handleTimelineChange = (event) => {
+    const {target: { value },} = event;
+    if (!setVideoPlayStatus) {
+    videoPlayStatus = video.paused ? false : true;
+    setVideoPlayStatus = true;
+    }
+    video.pause();
+    video.currentTime = value;
+};
+
+const handleTimelineSet = () => {
+    videoPlayStatus ? video.play() : video.pause();
+    setVideoPlayStatus = false;
+    };
+    
+
+    timeline.addEventListener("input", handleTimelineChange);
+//timeline.addEventListener("change", handleTimelineSet);
+    */
