@@ -11,11 +11,10 @@ export const home = async(req,res) => {
 
 export const watch = async(req,res) => {
     const {params:{id}} = req;
-    const video = await Video.findById(id).populate("owner").populate("comments");//Video에서 찾아도 되는 이유: 이 파일에 mongoose가 import돼 있으며, 이는  mongoDB와 이어져 있고 이를 이용해 Video model을 만들었으므로 자연스레 찾을 수 있게됨.
+    const video = await Video.findById(id).populate("owner").populate("comments").populate({path: "comments", populate : {path: "owner"}})//Video에서 찾아도 되는 이유: 이 파일에 mongoose가 import돼 있으며, 이는  mongoDB와 이어져 있고 이를 이용해 Video model을 만들었으므로 자연스레 찾을 수 있게됨.
     if(!video){
         return res.render("404", { pageTitle: "Video not found." });
     }
-    console.log(video);
     return res.render("watch",{pageTitle : video.title, video });
 };
 
@@ -142,7 +141,7 @@ export const createComment = async (req, res) => {
     });
     video.comments.push(comment._id); // 만들 댓글의 ObjId를  비디오의 comments array에 넣어줌
     video.save(); //comments array에 변경사항 생겨서 저장해줌 !
-    return res.status(201).json({ newCommentId: comment._id }); // fetch에 대해 프론트엔드로 데이터를 보내고 싶다면 json 형태로 보내야함.
+    return res.status(201).json({ newCommentId: comment._id, user}); // fetch에 대해 프론트엔드로 데이터를 보내고 싶다면 json 형태로 보내야함.
 };
 
 // 내가 만든 controller

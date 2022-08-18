@@ -411,7 +411,7 @@ input[type=submit]:disabled,
   padding: 18px;
 }
 #commentForm textarea {
-  height: 30px;
+  height: 36px;
   width: 97%;
   background-color: transparent;
   color: white;
@@ -421,28 +421,49 @@ input[type=submit]:disabled,
   background-color: grey;
 }
 
-.video__comments {
-  display: flex;
-  flex-direction: column;
-  max-width: 320px;
-  width: 100%;
-  margin: 0 auto;
-  margin-top: 20px;
-}
-.video__comments .video__comment {
-  padding: 10px;
-  border-radius: 9999px;
-  background-color: white;
-  color: black;
-  margin-bottom: 10px;
-}
-
 .video__delete {
   padding: 5px;
   margin-left: 20px;
   width: max-content;
   background-color: red;
   border-radius: 10px;
+}
+
+.video__comments {
+  display: flex;
+  flex-direction: column;
+  width: 95%;
+  margin: 0 auto;
+  margin-top: 20px;
+}
+.video__comments .video__comment {
+  display: flex;
+  padding: 10px;
+  color: white;
+  margin-bottom: 10px;
+}
+.video__comments .video__comment .userIcon {
+  margin-right: 15px;
+}
+.video__comments .video__comment .userIcon img {
+  height: 40px;
+  width: 40px;
+  border-radius: 50%;
+}
+.video__comments .video__comment .video__comment-content .video__comment-text {
+  margin-top: 10px;
+  font-size: 18px;
+}
+.video__comments .video__comment .video__comment-content .video__comment-controls {
+  margin-top: 15px;
+}
+.video__comments .video__comment .video__comment-content .video__comment-controls .comment-like,
+.video__comments .video__comment .video__comment-content .video__comment-controls .editBtn,
+.video__comments .video__comment .video__comment-content .video__comment-controls .removeBtn {
+  cursor: pointer;
+  margin-right: 10px;
+  font-size: 15px;
+  opacity: 0.8;
 }
 
 a {

@@ -9,28 +9,78 @@ const editBtns = document.querySelectorAll(".editBtn");
 
 addCommentBtn.disabled = true;
 
-const addComment = async (text, id) => {
+const addComment = async (text, id, user) => {
     const videoComments = document.querySelector(".video__comments ul");
+
     const newComment = document.createElement("li");
     newComment.dataset.id = id;
     newComment.className = "video__comment";
-    const icon = document.createElement("i")
-    icon.className = "fas fa-comment";
-    const span = document.createElement("span");
-    span.innerText = `${text}`;
+
+    const userIcon = document.createElement("div");
+    userIcon.className = "userIcon";
+    let imgThis;
+    if(!user.avatarUrl){
+        imgThis = document.createElement("span");
+        imgThis.innerText = "😎";
+    }
+    else{
+        imgThis = document.createElement("img");
+        if(user.avatarUrl.split("/")[0] === "uploads"){
+            imgThis.src = "/" + user.avatarUrl;
+        }
+        else {
+            imgThis.src = user.avatarUrl;
+        }
+
+    }
+    userIcon.append(imgThis);
+
+    const videoCommentContent = document.createElement("div");
+    videoCommentContent.className = "video__comment-content"
+    const videoCommentUsername = document.createElement("div");
+    videoCommentUsername.className = "video__comment-username";
+    const thisUsername = document.createElement("span");
+    thisUsername.innerText = user.username
+    videoCommentUsername.append(thisUsername);
+    videoCommentContent.append(videoCommentUsername);
+
+    const videoCommentText = document.createElement("div");
+    videoCommentText.className = "video__comment-text";
+    const commentText = document.createElement("span")
+    commentText.innerText = `${text}`;
+    videoCommentText.append(commentText);
+
+    const videoCommentControls = document.createElement("div");
+    videoCommentControls.className = "video__comment-controls";
+    const commentLike = document.createElement("span");
+    commentLike.className = "comment-like";
+    const likeIcon = document.createElement("i");
+    likeIcon.className = "far fa-thumbs-up";
+    const commentLikeNum = document.createElement("span");
+    commentLikeNum.className = "comment-likeNum"
+    commentLike.append(likeIcon);
+    commentLike.append(commentLikeNum);
     const rmvBtn = document.createElement("span");
     rmvBtn.innerText = " ❌"
     rmvBtn.className = "removeBtn";
     rmvBtn.addEventListener("click", handleRemoveComment);
     const editbtn = document.createElement("span");
-    editbtn.innerText = " ✏️";
+    editbtn.innerText = " Edit";
     editbtn.className = "editBtn";
     editbtn.addEventListener("click", showEditComment);
-    newComment.appendChild(icon);
-    newComment.appendChild(span);
-    newComment.appendChild(rmvBtn);
-    newComment.appendChild(editbtn);
+    videoCommentControls.append(commentLike);
+    videoCommentControls.append(editbtn);
+    videoCommentControls.append(rmvBtn);
+
+    videoCommentContent.append(videoCommentUsername);
+    videoCommentContent.append(videoCommentText);
+    videoCommentContent.append(videoCommentControls);
+    
+    newComment.append(userIcon);
+    newComment.append(videoCommentContent);
+
     videoComments.prepend(newComment);
+    
     addCommentBtn.disabled = true;
     addCommentBtn.style.backgroundColor = "grey";
 };
@@ -54,14 +104,14 @@ const handleSubmit = async (event) => {
     });
     if(response.status === 201){
         textarea.value ="";
-        const { newCommentId } = await response.json(); // 백엔드로부터 보내온 걸 쓸려면 이렇게 const data = await response.json()을 해야 쓸 수 있음.
-        addComment(text, newCommentId);
+        const { newCommentId, user} = await response.json(); // 백엔드로부터 보내온 걸 쓸려면 이렇게 const data = await response.json()을 해야 쓸 수 있음.
+        addComment(text, newCommentId, user);
     }
 };
 
 const handleRemoveComment = async (event) => {
     //const videoId = videoContainer.dataset.videoid
-    const child = event.target.parentElement;
+    const child = event.target.parentElement.parentElement.parentElement;
     const commentid = child.dataset.id;
     const response = await fetch(`/api/comment/${commentid}/remove`, {
         method : "DELETE",
@@ -94,8 +144,9 @@ window.addEventListener("keyup", handleKeyPress);
  // comment edit
  const handleEditSubmit = async (event) => {
     event.preventDefault();
-    const commentid = event.target.parentElement.dataset.id;
-    const span = event.target.parentElement.querySelector("span");
+    const li = event.target.parentElement.parentElement.parentElement;
+    const commentid = li.dataset.id;
+    const span = document.querySelector(".video__comment-text span");
     const input = event.target.querySelector("input");
     const text = input.value.trim();
     if(text === ""){

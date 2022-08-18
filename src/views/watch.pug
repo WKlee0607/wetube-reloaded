@@ -25,23 +25,24 @@ block content
                     div.fullScreen
                         span#fullScreen
                             i.fas.fa-expand
+
+    div.top__box
+        div.top__box-hashtags=String(video.hashtags).replace(/,/g," ")
+        div.top__box-title=video.title
+    div.middle__box
+        div.like Like
+            if video.meta.likes.find((id) => id !== String(loggedInUser._id))
+                i.fas.fa-thumbs-up 
+            else 
+                i.far.fa-thumbs-up
+            span.likeNum=video.meta.likes.length
+        div.share__box
+            div.share Share 
+                i.fas.fa-share
+    hr.middle__hr
+    div.owner
+    hr.middle__hr
     if loggedIn
-        div.top__box
-            div.top__box-hashtags=String(video.hashtags).replace(/,/g," ")
-            div.top__box-title=video.title
-        div.middle__box
-            div.like Like
-                if video.meta.likes.find((id) => id !== String(loggedInUser._id))
-                    i.fas.fa-thumbs-up 
-                else 
-                    i.far.fa-thumbs-up
-                span.likeNum=video.meta.likes.length
-            div.share__box
-                div.share Share 
-                    i.fas.fa-share
-        hr.middle__hr
-        div.owner
-        hr.middle__hr
         div.video__add-comments
             form.video__comment-form#commentForm
                 textarea(cols="30", rows="10", placeholder="Write a nice comment..")
@@ -49,19 +50,32 @@ block content
             if String(video.owner._id) === String(loggedInUser._id)
                 div.video__delete
                     a(href=`/videos/${video._id}/delete`) Delete Video
-    else 
-        span Like
-            i.far.fa-thumbs-up
-            span=video.meta.likes.length
+    
     div.video__comments
         ul 
             each comment in video.comments.reverse()
-               li.video__comment(data-id=comment._id)
-                    i.fas.fa-comment
-                    span #{comment.text}
-                    if (String(loggedInUser._id) === String(comment.owner))
-                        span.removeBtn  ❌
-                        span.editBtn  ✏️
+                li.video__comment(data-id=comment._id)
+                    div.userIcon
+                        if !comment.owner.avatarUrl
+                            span 😎
+                        else
+                            if comment.owner.avatarUrl.split("/")[0] === "uploads"
+                                img(src="/" + comment.owner.avatarUrl, crossorigin)
+                            else
+                                img(src=comment.owner.avatarUrl, crossorigin)
+                    div.video__comment-content
+                        div.video__comment-username
+                            sapn=comment.owner.username
+                        div.video__comment-text
+                            span #{comment.text}
+                        div.video__comment-controls
+                            span.comment-like 
+                                i.far.fa-thumbs-up
+                                span.comment-likeNum 
+                            if (String(loggedInUser._id) === String(comment.owner._id))
+                                span.editBtn Edit
+                                span.removeBtn  ❌
+                                
     
                     
 //-
