@@ -31,7 +31,7 @@ const addComment = async (text, id, user) => {
         else {
             imgThis.src = user.avatarUrl;
         }
-
+        imgThis.crossOrigin = "";
     }
     userIcon.append(imgThis);
 
