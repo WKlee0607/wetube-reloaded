@@ -70,8 +70,11 @@ block content
                             span #{comment.text}
                         div.video__comment-controls
                             span.comment-like 
-                                i.far.fa-thumbs-up
-                                span.comment-likeNum 
+                                if comment.meta.likes.find((id) => id !== String(loggedInUser._id))
+                                    i.fas.fa-thumbs-up 
+                                else
+                                    i.far.fa-thumbs-up
+                                span.comment-likeNum=comment.meta.likes.length
                             if (String(loggedInUser._id) === String(comment.owner._id))
                                 span.editBtn Edit
                                 span.removeBtn  ❌
@@ -94,4 +97,4 @@ block scripts
     script(src="/assets/js/videoPlayer.js")
     if loggedIn 
         script(src="/assets/js/commentSection.js")
-        script(src="/assets/js/likeSection.js")
+        script(src="/assets/js/videoLikeSection.js")

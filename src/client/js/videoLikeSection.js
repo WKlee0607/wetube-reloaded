@@ -4,6 +4,7 @@ const videoContainer = document.getElementById("videoContainer");
 const like = document.querySelector(".like");
 const likeIcon = like.querySelector("i");
 
+
 const fakeLikeNum = (likes) => {
     const likeNum = like.querySelector(".likeNum");
     likeNum.remove();
@@ -26,8 +27,7 @@ const fakeDislikeNum = () => {
 };
 
 
-const handleLikeClick = async () => {
-    console.log("like");
+const handleVideoLikeClick = async () => {
     const { videoid } = videoContainer.dataset;
     const response = await fetch(`/api/videos/${videoid}/like`, {
         method:"POST",
@@ -45,5 +45,6 @@ const handleLikeClick = async () => {
 };
 
 if(like){
-    like.addEventListener("click", handleLikeClick);
+    like.addEventListener("click", handleVideoLikeClick);
 }
+

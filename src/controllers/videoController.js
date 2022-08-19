@@ -2,6 +2,7 @@ import Video from "../models/Video";
 import Comment from "../models/Comment";
 import User from "../models/User"
 import { async } from "regenerator-runtime";
+import { response } from "express";
 
 export const home = async(req,res) => {
     const videos = await Video.find({}).sort({createdAt:"desc"}).populate("owner");//await: 해당 코드가 끝날 때까지 다음 순서의 코드를 진행시키지 않음. 즉, 해당 코드를 기다려주는 역할을 함./ video.find: 모든 DB에 있는 모든 video를 찾음
@@ -208,3 +209,26 @@ export const videoLike = async (req, res) => {
     video.save();
     return res.status(200).json({likes : video.meta.likes});
 };
+
+export const likeComment = async (req, res) => {
+    const {session : {user : {_id}}, params : {id}} = req;
+    const user = await User.findById(_id);
+    const comment = await Comment.findById(id);
+    if(!user || !comment){
+        req.flash("error", "comment or user is not exists");
+        return res.sendStatus(404);
+    }
+    const found = comment.meta.likes.find((element) => element !== _id);
+    if(found){
+        user.commentLikes.splice(user.commentLikes.indexOf(id),1);
+        comment.meta.likes.splice(comment.meta.likes.indexOf(_id),1);
+        user.save();
+        comment.save();
+        return res.sendStatus(204);
+    }
+    comment.meta.likes.push(_id);
+    user.commentLikes.push(id);
+    comment.save();
+    user.save();
+    return res.status(200).json({commentLikes : comment.meta.likes});
+}

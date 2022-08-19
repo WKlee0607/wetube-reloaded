@@ -4,6 +4,9 @@ const commentSchema = new mongoose.Schema({
     text: {type:String, required:true },
     owner: { type: mongoose.Schema.Types.ObjectId, required: true, ref:"User" }, // User와 mongoose relationship
     video: { type: mongoose.Schema.Types.ObjectId, required: true, ref:"Video" }, // Video와 mongoose relationship
+    meta : {
+        likes: [{type: mongoose.Schema.Types.ObjectId, required: true, ref:"User"}],
+    },
     createdAt: {type:Date, required:true, default:Date.now },
 });
 

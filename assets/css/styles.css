@@ -466,6 +466,10 @@ input[type=submit]:disabled,
   opacity: 0.8;
 }
 
+i {
+  margin-right: 3px;
+}
+
 a {
   color: inherit;
   text-decoration: none;

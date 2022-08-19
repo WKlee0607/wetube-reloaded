@@ -6,6 +6,7 @@ const textarea = form.querySelector("textarea");
 const addCommentBtn = form.querySelector("button");
 const removeBtns = document.querySelectorAll(".removeBtn");
 const editBtns = document.querySelectorAll(".editBtn");
+const commentLikeBtns = document.querySelectorAll(".comment-like i");
 
 addCommentBtn.disabled = true;
 
@@ -56,6 +57,7 @@ const addComment = async (text, id, user) => {
     commentLike.className = "comment-like";
     const likeIcon = document.createElement("i");
     likeIcon.className = "far fa-thumbs-up";
+    likeIcon.addEventListener("click", handleCommentLike)
     const commentLikeNum = document.createElement("span");
     commentLikeNum.className = "comment-likeNum"
     commentLike.append(likeIcon);
@@ -202,10 +204,36 @@ const handleTextAndBtn = (event) => {
         addCommentBtn.disabled = false;
         addCommentBtn.style.backgroundColor = "#3DA6FF";
     }
+};
+
+const handleCommentLike = async (event) => {
+    const commentId = event.target.parentElement.parentElement.parentElement.parentElement.dataset.id
+    const commentLIkesNum = event.target.parentElement.querySelector(".comment-likeNum");
+    const response = await fetch(`/api/comment/${commentId}/like`, {
+        method:"POST",
+    }); 
+    if(response.status === 200){
+        const {commentLikes} = await response.json();
+        commentLIkesNum.innerText = commentLikes.length;
+        event.target.className = "fas fa-thumbs-up"
+        return;
+    };
+    if(response.status === 404){
+       return window.location.reload();
+    };
+    if(response.status === 204){
+        commentLIkesNum.innerText = commentLIkesNum.innerText - 1;
+        event.target.className = "far fa-thumbs-up"
+        return console.log("204");
+    };
 }
 
 if(editBtns){
     Array.from(editBtns).forEach((editBtn) => editBtn.addEventListener("click", showEditComment)); 
+};
+
+if(commentLikeBtns){
+    Array.from(commentLikeBtns).forEach((commentLikeBtn) => commentLikeBtn.addEventListener("click", handleCommentLike)); 
 };
 
 
