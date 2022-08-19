@@ -84,6 +84,7 @@
       }
       .video__comment-controls {
         margin-top: 15px;
+        display: flex;
         .comment-like,
         .editBtn, 
         .removeBtn {

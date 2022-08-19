@@ -69,15 +69,15 @@ block content
                         div.video__comment-text
                             span #{comment.text}
                         div.video__comment-controls
-                            span.comment-like 
+                            div.comment-like 
                                 if comment.meta.likes.find((id) => id !== String(loggedInUser._id))
                                     i.fas.fa-thumbs-up 
                                 else
                                     i.far.fa-thumbs-up
                                 span.comment-likeNum=comment.meta.likes.length
                             if (String(loggedInUser._id) === String(comment.owner._id))
-                                span.editBtn Edit
-                                span.removeBtn  ❌
+                                div.editBtn Edit
+                                div.removeBtn  ❌
                                 
     
                     

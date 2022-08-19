@@ -456,6 +456,7 @@ input[type=submit]:disabled,
 }
 .video__comments .video__comment .video__comment-content .video__comment-controls {
   margin-top: 15px;
+  display: flex;
 }
 .video__comments .video__comment .video__comment-content .video__comment-controls .comment-like,
 .video__comments .video__comment .video__comment-content .video__comment-controls .editBtn,

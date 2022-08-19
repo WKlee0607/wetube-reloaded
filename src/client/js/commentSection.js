@@ -171,19 +171,21 @@ window.addEventListener("keyup", handleKeyPress);
 };
 
 const handleExitForm = (event) => {
-    const li = event.target.parentElement.parentElement;
     const form = event.target.parentElement;
     form.remove();
 };
 
 const showEditComment = (event) => {
-    const li = event.target.parentElement;
-    const alreadyForm = li.querySelector("form");
+    const div = event.target.parentElement;
+    const alreadyForm = div.querySelector("form");
+    if(alreadyForm){
+        return;
+    }
     const form = document.createElement("form");
     form.addEventListener("submit", handleEditSubmit); 
     const input = document.createElement("input");
     input.type = "text";
-    input.value = li.querySelector("span").innerText;
+    input.value = div.parentElement.querySelector(".video__comment-text span").innerText;
     const btn = document.createElement("button");
     btn.innerText = "Edit";
     const exit = document.createElement("span");
@@ -192,7 +194,7 @@ const showEditComment = (event) => {
     form.appendChild(input);
     form.appendChild(btn);
     form.appendChild(exit);
-    li.appendChild(form);
+    div.appendChild(form);
     input.focus();
 };
 

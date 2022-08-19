@@ -27,7 +27,7 @@ const fakeDislikeNum = () => {
 };
 
 
-const handleVideoLikeClick = async () => {
+const handleVideoLikeClick = async (event) => {
     const { videoid } = videoContainer.dataset;
     const response = await fetch(`/api/videos/${videoid}/like`, {
         method:"POST",
