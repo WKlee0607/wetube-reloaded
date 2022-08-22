@@ -9,7 +9,7 @@ module.exports = {
         videoPlayer : BASE_JS + "videoPlayer.js",
         recorder : BASE_JS + "recorder.js",
         commentSection: BASE_JS + "commentSection.js",
-        videoLikeSection: BASE_JS + "videoLikeSection.js",
+        videoSection: BASE_JS + "videoSection.js",
     },
     //watch:true, 수정 사항이 있고 저장할 때마다 이를 반영해줌. -> 이 때문에 콘솔창을 2개 돌려야함.dev:server와 dev:assets. 이 둘은 동시에 실행되어야함.
     plugins: [new MiniCssExtractPlugin({

@@ -41,6 +41,28 @@ block content
                 i.fas.fa-share
     hr.middle__hr
     div.owner
+        div.owner__avatar
+            a(href=`/users/${video.owner._id}`)
+                if !video.owner.avatarUrl
+                    span 😎
+                else
+                    if video.owner.avatarUrl.split("/")[0] === "uploads"
+                        img(src="/" + video.owner.avatarUrl, crossorigin)
+                    else
+                        img(src=video.owner.avatarUrl, crossorigin)
+        div.owner__info
+            div.owner__info-username
+                a(href=`/users/${video.owner._id}`)=video.owner.username
+            div.owner__info-subNum
+        div.owner__subscription(data-userid=video.owner._id)
+            if String(video.owner._id) === String(loggedInUser._id)
+                span Video Owner
+            else
+                if video.owner.sub.subscription.find((id) => id !== String(loggedInUser._id))
+                    button.owner__subscription-after-btn Subscribing
+                    i.far.fa-bell
+                else 
+                    button.owner__subscription-btn Subscribe
     hr.middle__hr
     if loggedIn
         div.video__add-comments
@@ -97,4 +119,4 @@ block scripts
     script(src="/assets/js/videoPlayer.js")
     if loggedIn 
         script(src="/assets/js/commentSection.js")
-        script(src="/assets/js/videoLikeSection.js")
+        script(src="/assets/js/videoSection.js")

@@ -27,20 +27,70 @@
   }
 }
 
+.owner{
+  margin: 18px 3%;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  .owner__avatar {
+    display: flex;
+    justify-content: center;
+    width: 8%;
+    font-size: 20px;
+    img {
+      height: 40px;
+      width: 40px;
+      border-radius: 50%;
+    }
+  }
+  .owner__info {
+    width: 80%;
+    .owner__info-username {
+      font-size: 20px;
+    }
+  }
+  .owner__subscription {
+    width: 12%;
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+    button {
+      height: 37px;
+      width: 80px;
+      border: none;
+      border-radius: 2px;
+      color: white;
+      cursor: pointer;
+    }
+    .owner__subscription-btn {
+      background-color: #CC0100;
+    }
+    .owner__subscription-after-btn {
+      background-color: #303030;
+      opacity: 0.8;
+    }
+    i {
+      margin-left: 10px;
+      opacity: 0.8;
+      cursor: pointer;
+    }
+  }
+}
+
 .middle__hr {
   width: 95%;
   border-color: #626262;
 }
 
 #commentForm {
-  max-width: none;
+  max-width: 95%;
   border: none;
   background-color: transparent;
   display: flex;
   padding: 18px;
     textarea {
       height: 36px;
-      width: 97%;
+      width: 100%;
       background-color: transparent;
       color: white;
       font-size: 18px;
@@ -52,7 +102,7 @@
 
 .video__delete {
   padding: 5px;
-  margin-left: 20px;
+  margin-left: 2.5%;
   width: max-content;
   background-color: red;
   border-radius: 10px;

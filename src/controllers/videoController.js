@@ -13,6 +13,7 @@ export const home = async(req,res) => {
 export const watch = async(req,res) => {
     const {params:{id}} = req;
     const video = await Video.findById(id).populate("owner").populate("comments").populate({path: "comments", populate : {path: "owner"}})//Video에서 찾아도 되는 이유: 이 파일에 mongoose가 import돼 있으며, 이는  mongoDB와 이어져 있고 이를 이용해 Video model을 만들었으므로 자연스레 찾을 수 있게됨.
+    console.log(video);
     if(!video){
         return res.render("404", { pageTitle: "Video not found." });
     }

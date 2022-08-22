@@ -6,6 +6,7 @@ import session from "express-session";
 
 import aws from "aws-sdk";
 import {s3} from "../middlewares"
+import { async } from "regenerator-runtime";
 
 export const getJoin = (req, res) => res.render("join",{pageTitle:"Join"});
 export const postJoin = async(req, res) => {
@@ -293,4 +294,35 @@ export const see = async (req, res) => {
         return res.status(404).render("404",{pageTitle:"User not found."});
     }
     return res.render("users/profile", {pageTitle: user.name, user})
+};
+
+export const videoOwnerSubscription = async (req, res) => {
+    const {params : {id}, session :{user:{_id}} } = req;
+    if(id === _id) {
+        req.flash("error", "you can not subscribe yourself");
+        return res.sendStatus(404)
+    }
+    if(!_id){
+        req.flash("error", "Login first. if you want to subscribe");
+        return res.sendStatus(404)
+    }
+    const owner = await User.findById(id);
+    const user = await User.findById(_id);
+    if(!owner || !user){
+        req.flash("error", "Video Owner or User is not exist");
+        return res.sendStatus(404)
+    }
+    const found = owner.sub.subscription.find((element) => element !== _id);
+    if(found){
+        owner.sub.subscription.splice(owner.sub.subscription.indexOf(_id),1);
+        user.sub.subscribing.splice(user.sub.subscribing.indexOf(_id),1);
+        owner.save();
+        user.save();
+        return res.sendStatus(204);
+    }
+    owner.sub.subscription.push(_id);
+    user.sub.subscribing.push(id);
+    owner.save();
+    user.save();
+    return res.sendStatus(200);
 }

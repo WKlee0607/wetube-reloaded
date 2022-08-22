@@ -13,6 +13,10 @@ const userSchema = new mongoose.Schema({
     likes: [{ type: mongoose.Schema.Types.ObjectId, ref:"Video"}],
     comments :[{type:mongoose.Schema.Types.ObjectId, ref:"Comment" }],
     commentLikes : [{ type: mongoose.Schema.Types.ObjectId, ref:"Comment"}],
+    sub : {
+        subscription : [{ type: mongoose.Schema.Types.ObjectId, ref:"User"}],// 내 채널 구독하는 사람들.
+        subscribing : [{ type: mongoose.Schema.Types.ObjectId, ref:"User"}],// 구독 하는 채널.
+    }  
 })
 
 userSchema.pre("save", async function() {
