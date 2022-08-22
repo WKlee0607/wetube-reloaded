@@ -52,12 +52,27 @@ table {
 }
 
 header {
-  padding: 20px 50px;
+  padding: 20px 30px;
   display: flex;
   justify-content: space-between;
   align-items: center;
 }
-header .header__logo {
+header .menu {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+header .menu .menuBar {
+  margin-right: 20px;
+  font-size: 20px;
+  cursor: pointer;
+}
+header .menu .header__logo {
+  display: flex;
+  align-items: center;
+  font-size: 20px;
+}
+header .menu .header__logo i {
   color: #ff1300;
   font-size: 38px;
 }
@@ -315,7 +330,7 @@ input[type=submit]:disabled,
 }
 .search__form button {
   position: absolute;
-  right: 15px;
+  right: 40px;
   font-size: 18px;
   background-color: rgba(0, 0, 0, 0);
   text-align: center;
