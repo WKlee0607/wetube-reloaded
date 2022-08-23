@@ -1,28 +1,9 @@
 header{
-    padding: 20px 30px;
+    padding: 10px 30px;
     display: flex;
     justify-content: space-between;
     align-items: center;
-    .menu{
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-        .menuBar {
-            margin-right: 20px;
-            font-size: 20px;
-            cursor: pointer;
-        }
-        .header__logo {
-            display: flex;
-            align-items: center;
-            font-size: 20px;
-            i{
-                color: $red;
-                font-size: 38px;
-            }
-        }
-    }
-    
+    background-color:#212121 ;
     ul {
         display: flex;
         justify-content: space-between;
@@ -48,4 +29,27 @@ header{
         height: 40px;
         border-radius: 50%;
     }
+}    .header__left{
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        .menuBar {
+            margin-right: 20px;
+            font-size: 20px;
+            cursor: pointer;
+            
+        }
+        .header__logo {
+            display: flex;
+            align-items: center;
+            font-size: 20px;
+            i{
+                color: $red;
+                font-size: 38px;
+            }
+        }
+    }
+
+.hidden {
+    display: none;
 }

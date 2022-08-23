@@ -1,0 +1,42 @@
+.subVideo-mixin {
+    display: flex;
+    margin: 30px;
+    height: 150px;
+    .subVideo-mixin__thumb {
+        width: 200px;
+        height: 150px;
+        border-radius: 2px;
+    }
+    .subVideo-mixin__data {
+        margin-left: 15px;
+        .subVideo-mixin__title {
+            font-size: 25px;
+            margin-bottom: 10px;
+        }
+        .subVideo-mixin__channel {
+            font-size: 15px;
+            opacity: 0.6;
+            margin-bottom: 3px;
+        }
+        .subVideo-mixin__meta {
+            font-size: 15px;
+            margin-bottom: 10px;
+            opacity: 0.6;
+        }
+        .subVideo-mixin__hashtags {
+            font-size: 15px;
+            opacity: 0.6;
+            margin-bottom: 3px;
+        }
+        .subVideo-mixin__description {
+            font-size: 15px;
+            opacity: 0.6;
+        }
+    }
+}
+
+hr {
+    margin: 0 30px;
+    border-color: grey;
+    opacity: 0.8;
+}

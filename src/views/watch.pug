@@ -58,11 +58,15 @@ block content
             if String(video.owner._id) === String(loggedInUser._id)
                 span Video Owner
             else
-                if video.owner.sub.subscription.find((id) => id !== String(loggedInUser._id))
-                    button.owner__subscription-after-btn Subscribing
-                    i.far.fa-bell
+                if loggedIn
+                    if user.sub.subscribing.find((id) => id !== String(video.owner._id))
+                        button.owner__subscription-after-btn Subscribing
+                        i.far.fa-bell
+                    else 
+                        button.owner__subscription-btn Subscribe
                 else 
                     button.owner__subscription-btn Subscribe
+
     hr.middle__hr
     if loggedIn
         div.video__add-comments
@@ -78,16 +82,18 @@ block content
             each comment in video.comments.reverse()
                 li.video__comment(data-id=comment._id)
                     div.userIcon
-                        if !comment.owner.avatarUrl
-                            span 😎
-                        else
-                            if comment.owner.avatarUrl.split("/")[0] === "uploads"
-                                img(src="/" + comment.owner.avatarUrl, crossorigin)
+                        a(href=`/users/${comment.owner._id}`)
+                            if !comment.owner.avatarUrl
+                                span 😎
                             else
-                                img(src=comment.owner.avatarUrl, crossorigin)
+                                if comment.owner.avatarUrl.split("/")[0] === "uploads"
+                                    img(src="/" + comment.owner.avatarUrl, crossorigin)
+                                else
+                                    img(src=comment.owner.avatarUrl, crossorigin)
                     div.video__comment-content
                         div.video__comment-username
-                            sapn=comment.owner.username
+                            a(href=`/users/${comment.owner._id}`)
+                                sapn=comment.owner.username
                         div.video__comment-text
                             span #{comment.text}
                         div.video__comment-controls

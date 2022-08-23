@@ -1,0 +1,16 @@
+mixin subVideos(video)
+    a(href=`/videos/${video.id}`)
+        div.subVideo-mixin
+            if video.thumbUrl.split("/")[0] === "uploads"
+                img(src="/" + video.thumbUrl, crossorigin).subVideo-mixin__thumb
+            else 
+                img(src=video.thumbUrl, crossorigin).subVideo-mixin__thumb
+            div.subVideo-mixin__data
+                div.subVideo-mixin__title=video.title
+                div.subVideo-mixin__channel=video.owner.name
+                div.subVideo-mixin__meta
+                    span #{video.meta.views} 회 ∙
+                    span.subVideo-mixin__createdAt  #{video.createdAt.getFullYear()}년 #{video.createdAt.getMonth()}월 #{video.createdAt.getDay()}일
+                div.subVideo-mixin__hashtags=video.hashtags
+                div.subVideo-mixin__description=video.description
+        hr 

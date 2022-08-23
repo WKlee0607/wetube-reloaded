@@ -16,6 +16,12 @@
         .video-mixin__meta{
             margin-top: 5px;
             font-size: 12px;
+            opacity: 0.6;
         }
+    }
+    .video-mixin__createdAt {
+        margin-top: 5px;
+        font-size: 12px;
+        opacity: 0.6;
     }
 }

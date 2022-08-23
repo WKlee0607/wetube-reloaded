@@ -1,0 +1,24 @@
+div.menu.hidden
+    div.menu__header 
+        include header-left
+    
+    div.menu__content
+        div.menu__content-user
+            ul 
+                li
+                    a(href="/")   
+                        div 
+                            i.fas.fa-house
+                            |  Home
+                if loggedIn
+                    li
+                        a(href=`/users/${loggedInUser._id}/subscription`) 
+                            div 
+                                i.fas.fa-photo-video
+                                |  Subscription
+        hr
+        div.menu__content-video 
+        hr
+        if loggedIn
+            div.menu__subscription 
+                

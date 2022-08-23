@@ -6,18 +6,23 @@ import { response } from "express";
 
 export const home = async(req,res) => {
     const videos = await Video.find({}).sort({createdAt:"desc"}).populate("owner");//await: 해당 코드가 끝날 때까지 다음 순서의 코드를 진행시키지 않음. 즉, 해당 코드를 기다려주는 역할을 함./ video.find: 모든 DB에 있는 모든 video를 찾음
-    console.log(videos);
+    //console.log(videos);
     return res.render("home",{pageTitle : "Home",videos});//videos를 db에서 받아옴.
 };
 
 export const watch = async(req,res) => {
     const {params:{id}} = req;
     const video = await Video.findById(id).populate("owner").populate("comments").populate({path: "comments", populate : {path: "owner"}})//Video에서 찾아도 되는 이유: 이 파일에 mongoose가 import돼 있으며, 이는  mongoDB와 이어져 있고 이를 이용해 Video model을 만들었으므로 자연스레 찾을 수 있게됨.
-    console.log(video);
+    //console.log(video);
     if(!video){
         return res.render("404", { pageTitle: "Video not found." });
     }
-    return res.render("watch",{pageTitle : video.title, video });
+    if(req.session.user){
+        const {_id} = req.session.user;
+        const user = await User.findById(_id);
+        return res.render("watch",{pageTitle : video.title, video, userId:_id, user});
+    }
+    return res.render("watch",{pageTitle : video.title, video, });
 };
 
 

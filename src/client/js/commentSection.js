@@ -19,6 +19,8 @@ const addComment = async (text, id, user) => {
 
     const userIcon = document.createElement("div");
     userIcon.className = "userIcon";
+    const a = document.createElement("a");
+    a.href = `/users/${user._id}`;
     let imgThis;
     if(!user.avatarUrl){
         imgThis = document.createElement("span");
@@ -34,15 +36,19 @@ const addComment = async (text, id, user) => {
         }
         imgThis.crossOrigin = "";
     }
-    userIcon.append(imgThis);
+    a.append(imgThis);
+    userIcon.append(a);
 
     const videoCommentContent = document.createElement("div");
     videoCommentContent.className = "video__comment-content"
     const videoCommentUsername = document.createElement("div");
     videoCommentUsername.className = "video__comment-username";
+    const aa = document.createElement("a")
+    aa.href = `/users/${user._id}`;
     const thisUsername = document.createElement("span");
     thisUsername.innerText = user.username
-    videoCommentUsername.append(thisUsername);
+    aa.append(thisUsername)
+    videoCommentUsername.append(aa);
     videoCommentContent.append(videoCommentUsername);
 
     const videoCommentText = document.createElement("div");
@@ -60,6 +66,7 @@ const addComment = async (text, id, user) => {
     likeIcon.addEventListener("click", handleCommentLike)
     const commentLikeNum = document.createElement("span");
     commentLikeNum.className = "comment-likeNum"
+    commentLikeNum.innerText = "0";
     commentLike.append(likeIcon);
     commentLike.append(commentLikeNum);
     const rmvBtn = document.createElement("span");

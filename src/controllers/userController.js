@@ -312,10 +312,10 @@ export const videoOwnerSubscription = async (req, res) => {
         req.flash("error", "Video Owner or User is not exist");
         return res.sendStatus(404)
     }
-    const found = owner.sub.subscription.find((element) => element !== _id);
+    const found = user.sub.subscribing.find((element) => element !== id);
     if(found){
         owner.sub.subscription.splice(owner.sub.subscription.indexOf(_id),1);
-        user.sub.subscribing.splice(user.sub.subscribing.indexOf(_id),1);
+        user.sub.subscribing.splice(user.sub.subscribing.indexOf(id),1);
         owner.save();
         user.save();
         return res.sendStatus(204);
@@ -325,4 +325,18 @@ export const videoOwnerSubscription = async (req, res) => {
     owner.save();
     user.save();
     return res.sendStatus(200);
-}
+};
+
+
+export const seeMySubscription = async (req, res) => {
+    const {params:{id}} = req;
+    const user = await User.findById(id).populate({path: "sub", populate : {path: "subscribing", populate : {path : "videos", populate : {path :"owner"}}}});
+    if(!user){
+        req.flash("error", "User is not exist");
+        return res.sendStatus(404);
+    }
+    let videos = [];
+    user.sub.subscribing.forEach(owner => owner.videos.forEach(video => videos.push(video)));
+    const descVideos = videos.sort((a,b) => new Date(b.createdAt) - new Date(a.createdAt))// 내림차순 정렬
+    return res.render("users/subscription",{pageTitle:`${user.username}'s Subscription`, user, descVideos});
+};
