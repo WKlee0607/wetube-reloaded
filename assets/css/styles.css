@@ -104,10 +104,6 @@ header .header__avatar {
   font-size: 38px;
 }
 
-.hidden {
-  display: none;
-}
-
 footer {
   text-align: center;
   font-size: 12px;
@@ -213,12 +209,23 @@ input[type=submit]:disabled,
 }
 
 .menu {
+  animation-delay: 0s;
+  animation-duration: 0.3s;
+  animation-name: appear;
   position: absolute;
   left: 0;
   z-index: 100;
   width: 230px;
   height: 100%;
   background-color: #2d2d2d;
+}
+@keyframes appear {
+  0% {
+    transform: translateX(-230px);
+  }
+  100% {
+    transform: translateX(0px);
+  }
 }
 .menu hr {
   border-color: #939191;
@@ -247,6 +254,10 @@ input[type=submit]:disabled,
 }
 .menu .menu__content .menu__content-user li div {
   padding: 10px;
+}
+
+.hidden {
+  display: none;
 }
 
 .header__left {
