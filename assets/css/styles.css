@@ -504,10 +504,6 @@ hr {
   text-decoration: underline;
 }
 
-.hidden {
-  display: none;
-}
-
 .upload__container {
   width: 100%;
 }
@@ -718,4 +714,8 @@ main {
 .message.error {
   background-color: #FF1300;
   color: white;
+}
+
+.hidden {
+  display: none;
 }
