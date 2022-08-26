@@ -1,11 +1,19 @@
-const menuBars = document.querySelectorAll(".menuBar");
+const headerMenuBar = document.querySelector("header .menuBar");
 const menu = document.querySelector(".menu");
+const menuMenuBar = menu.querySelector(".menuBar");
 
-const handleMenuBarClick = () => {
-    menu.classList.toggle("hidden");
+const handleHeaderMenuBarClick = () => {
+    menu.classList.remove("hiddenMenu");
+    menu.classList.remove("hidden");
+    menu.classList.add("showMenu");
 }
 
-if(menuBars){
-    Array.from(menuBars).forEach((menuBar) => menuBar.addEventListener("click", handleMenuBarClick)); 
+const handleMenuMenuBarClick = () => {
+    menu.classList.remove("showMenu");
+    menu.classList.add("hiddenMenu");
 }
+
+headerMenuBar.addEventListener("click", handleHeaderMenuBarClick)
+menuMenuBar.addEventListener("click", handleMenuMenuBarClick)
+
 

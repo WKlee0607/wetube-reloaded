@@ -209,23 +209,12 @@ input[type=submit]:disabled,
 }
 
 .menu {
-  animation-delay: 0s;
-  animation-duration: 0.3s;
-  animation-name: appear;
   position: absolute;
   left: 0;
   z-index: 100;
   width: 230px;
   height: 100%;
   background-color: #2d2d2d;
-}
-@keyframes appear {
-  0% {
-    transform: translateX(-230px);
-  }
-  100% {
-    transform: translateX(0px);
-  }
 }
 .menu hr {
   border-color: #939191;
@@ -256,8 +245,34 @@ input[type=submit]:disabled,
   padding: 10px;
 }
 
-.hidden {
-  display: none;
+.showMenu {
+  animation-delay: 0s;
+  animation-duration: 0.3s;
+  animation-name: appear;
+  animation-fill-mode: forwards;
+}
+@keyframes appear {
+  0% {
+    transform: translateX(-230px);
+  }
+  100% {
+    transform: translateX(0px);
+  }
+}
+
+.hiddenMenu {
+  animation-delay: 0s;
+  animation-duration: 0.3s;
+  animation-name: disappear;
+  animation-fill-mode: forwards;
+}
+@keyframes disappear {
+  0% {
+    transform: translateX(0px);
+  }
+  100% {
+    transform: translateX(-230px);
+  }
 }
 
 .header__left {

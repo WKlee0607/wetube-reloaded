@@ -1,16 +1,4 @@
-
-
 .menu {
-    @keyframes appear {
-        0% {
-            transform: translateX(-230px);
-        } 100% {
-            transform: translateX(0px);
-        }
-    } 
-    animation-delay: 0s;
-    animation-duration: 0.3s;
-    animation-name: appear;
     position: absolute;
     left: 0;
     z-index: 100;
@@ -48,6 +36,30 @@
     }
 }
 
-.hidden {
-    display: none;
+.showMenu {
+    @keyframes appear {
+        0% {
+            transform: translateX(-230px);
+        } 100% {
+            transform: translateX(0px);
+        }
+    } 
+    animation-delay: 0s;
+    animation-duration: 0.3s;
+    animation-name: appear;
+    animation-fill-mode: forwards;
+}
+
+.hiddenMenu {
+    @keyframes disappear {
+        0% {
+            transform: translateX(0px);
+        } 100% {
+            transform: translateX(-230px);
+        }
+    } 
+    animation-delay: 0s;
+    animation-duration: 0.3s;
+    animation-name: disappear;
+    animation-fill-mode: forwards;
 }
