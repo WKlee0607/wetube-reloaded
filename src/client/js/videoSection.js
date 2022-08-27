@@ -5,8 +5,7 @@ const like = document.querySelector(".like");
 const likeIcon = like.querySelector("i");
 const subscriptionBtn = document.querySelector(".owner__subscription button");
 
-
-
+//videoLike
 const fakeLikeNum = (likes, likeNum) => {
     likeIcon.className = "fas fa-thumbs-up"
     likeNum.innerText = likes.length;
@@ -37,6 +36,8 @@ const handleVideoLikeClick = async () => {
     };
 };
 
+
+//subscription
 const handleSubscriptionClick = async (event) => {
     const userId = event.target.parentElement.dataset.userid;
     const btn = event.target;
@@ -62,6 +63,9 @@ const handleSubscriptionClick = async (event) => {
     }
 };
 
+
+
+//eventListener
 if(like){
     like.addEventListener("click", handleVideoLikeClick);
 }
@@ -69,4 +73,6 @@ if(like){
 if(subscriptionBtn){
     subscriptionBtn.addEventListener("click", handleSubscriptionClick);
 }
+
+
 

@@ -518,6 +518,59 @@ hr {
   margin-bottom: 10px;
 }
 
+#shareContainer {
+  position: fixed;
+  left: 50%;
+  transform: translate(-50%, 20%);
+  z-index: 2023;
+  min-width: 380px;
+  max-width: 500px;
+  width: 40vw;
+  padding: 20px;
+  background-color: #212121;
+  flex-direction: column;
+}
+#shareContainer .share__header,
+#shareContainer .share__icons {
+  margin-bottom: 25px;
+}
+#shareContainer .share__header {
+  display: flex;
+  justify-content: space-between;
+}
+#shareContainer .share__header i {
+  cursor: pointer;
+}
+#shareContainer .share__icons img {
+  height: 73px;
+  width: 73px;
+  border-radius: 36px;
+  margin-bottom: 10px;
+}
+#shareContainer .share__icons .share__icon {
+  display: flex;
+  flex-direction: column;
+  width: fit-content;
+  cursor: pointer;
+}
+#shareContainer .share__link {
+  display: flex;
+  align-items: center;
+}
+#shareContainer .share__link input {
+  margin-right: 7px;
+}
+#shareContainer .share__link .share__link-copy {
+  cursor: pointer;
+  border: none;
+  border-radius: 5px;
+  color: aqua;
+  background-color: transparent;
+}
+#shareContainer .share__link .share__link-copy:active {
+  background-color: #626262;
+}
+
 .top__box {
   padding: 10px 0;
   margin: 0 3%;

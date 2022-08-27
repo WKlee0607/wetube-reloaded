@@ -1,6 +1,18 @@
 extends base.pug
 
 block content 
+    div.hidden#shareContainer
+        div.share__header
+            span Share
+            i.fas.fa-times
+        div.share__icons
+            div.share__icons-kakao.share__icon
+                img(src="https://play-lh.googleusercontent.com/Ob9Ys8yKMeyKzZvl3cB9JNSTui1lJwjSKD60IVYnlvU2DsahysGENJE-txiRIW9_72Vd", crossorigin)
+                span kakaoTalk
+        div.share__link
+            input(type="text" disabled)
+            button.share__link-copy COPY
+
     div#videoContainer(data-videoid=video._id)
         if video.fileUrl.split("/")[0] === "uploads"
             video(src="/" + video.fileUrl, crossorigin)
@@ -123,6 +135,8 @@ block content
 
 block scripts 
     script(src="/assets/js/videoPlayer.js")
+    script(src="/assets/js/kakaoJsSDK.js") 
+    script(src="/assets/js/videoShare.js") 
     if loggedIn 
         script(src="/assets/js/commentSection.js")
         script(src="/assets/js/videoSection.js")

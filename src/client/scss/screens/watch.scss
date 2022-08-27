@@ -1,3 +1,58 @@
+#shareContainer {
+  position: fixed;
+  left: 50%;
+  transform: translate(-50%,20%);
+  z-index: 2023;
+  min-width: 380px;
+  max-width: 500px;
+  width: 40vw;
+  padding: 20px;
+  background-color: #212121;
+  flex-direction: column;
+  .share__header,
+  .share__icons {
+    margin-bottom: 25px;
+  }
+  .share__header {
+    display: flex;
+    justify-content: space-between;
+    i {
+      cursor: pointer;
+    }
+  }
+  .share__icons {
+    img {
+      height: 73px;
+      width: 73px;
+      border-radius: 36px;
+      margin-bottom: 10px
+    };
+    .share__icon {
+      display: flex;
+      flex-direction: column;
+      width: fit-content;
+      cursor: pointer;
+    }
+  }
+  .share__link {
+    display: flex;
+    align-items: center;
+    input {
+      margin-right: 7px;
+    }
+    .share__link-copy {
+      cursor: pointer;
+      border: none;
+      border-radius: 5px;
+      color: aqua;
+      background-color: transparent;
+      &:active {
+        background-color: #626262;
+      }
+    }
+  }
+}
+
 .top__box {
   padding: 10px 0;
   margin: 0 3%;
