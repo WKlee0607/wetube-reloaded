@@ -18,6 +18,9 @@
     justify-content: space-between;
     i {
       cursor: pointer;
+      &:hover{
+        box-shadow: 1px 1px 20px $red;
+      }
     }
   }
   .share__icons {

@@ -2,6 +2,7 @@ const shareBox = document.querySelector(".share__box");
 
 //shareVideo
 const handleShaerboxClick = () => {
+    //share 창 띄우기
     const shareContainer = document.querySelector("#shareContainer");
     shareContainer.classList.toggle("hidden");
 
@@ -27,7 +28,22 @@ const handleShaerboxClick = () => {
     exit.addEventListener("click", () => {
         shareContainer.classList.add("hidden");
         linkInput.style.borderColor = "#333333"
+        div.remove();
     })
+
+     //screen lock
+     const div = document.createElement("div");
+     div.id = "dimmed"
+     document.body.append(div);
+     document.querySelector("#dimmed").addEventListener("scroll touchmove touchend mousewheel",
+     function (e) {
+         e.preventDefault();
+         e.stopPropagation();
+         return false})
+     document.querySelector("#dimmed").addEventListener("click", function() {
+             div.remove();
+             exit.click();
+     })
     
     // 공유하기
        //카카오 공유
@@ -47,6 +63,8 @@ const handleShaerboxClick = () => {
         })
         kakaoShare.click();
     }
+
+    
 }
 
 
