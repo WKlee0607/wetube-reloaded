@@ -71,11 +71,12 @@ block content
                 span Video Owner
             else
                 if loggedIn
-                    if user.sub.subscribing.find((id) => id !== String(video.owner._id))
+                    if user.sub.subscribing.find((id) => String(id) === String(video.owner._id))
                         button.owner__subscription-after-btn Subscribing
                         i.far.fa-bell
                     else 
                         button.owner__subscription-btn Subscribe
+                        
                 else 
                     button.owner__subscription-btn Subscribe
 

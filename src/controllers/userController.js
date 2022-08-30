@@ -306,14 +306,16 @@ export const videoOwnerSubscription = async (req, res) => {
         req.flash("error", "Login first. if you want to subscribe");
         return res.sendStatus(404)
     }
+    console.log(id,_id);
     const owner = await User.findById(id);
     const user = await User.findById(_id);
     if(!owner || !user){
         req.flash("error", "Video Owner or User is not exist");
         return res.sendStatus(404)
     }
-    const found = user.sub.subscribing.find((element) => element !== id);
-    if(found){
+    const found = user.sub.subscribing.find((element) => String(element) === String(id));
+    console.log(found);
+    if(found !== undefined){
         owner.sub.subscription.splice(owner.sub.subscription.indexOf(_id),1);
         user.sub.subscribing.splice(user.sub.subscribing.indexOf(id),1);
         owner.save();
