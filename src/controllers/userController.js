@@ -363,6 +363,6 @@ export const getUserLikeVideos = async(req, res) => {
         req.flash("error", "User is not exist");
         return res.sendStatus(404);
     }
-    const likedVideos = user.likes;
+    const likedVideos = user.likes.reverse();
     return res.render("users/likedVideos", {pageTitle:`${user.username}'s LikedVideos`,likedVideos});
 }
