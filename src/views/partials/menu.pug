@@ -4,22 +4,27 @@ div.menu.hidden(data-user=loggedInUser._id)
     div.menu__content
         div.menu__content-user
             ul 
-                li
-                    a(href="/")   
+                a(href="/")
+                    li
                         div 
                             i.fas.fa-house
                             |  Home
                 if loggedIn
-                    li
-                        a(href=`/users/${loggedInUser._id}/subscription`) 
+                    a(href=`/users/subscription`) 
+                        li
                             div 
                                 i.fas.fa-photo-video
                                 |  Subscription
         hr
-        div.menu__content-video 
-        hr
         if loggedIn
-            div.menu__subscription 
-                span.menu__subscription-title Subscription
+            div.menu__content-video 
+                ul 
+                    a(href=`/users/like-videos`)
+                        li 
+                            i.fas.fa-thumbs-up 
+                            |  Liked-Videos
+            hr
+            div.menu__subscription
+                div.menu__subscription-title Subscription
                     
                 

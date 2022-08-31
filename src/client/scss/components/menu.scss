@@ -1,5 +1,5 @@
 .menu {
-    position: absolute;
+    position: fixed;
     left: 0;
     z-index: 400;
     width: 230px;
@@ -32,9 +32,17 @@
                 }
             }
         }
+        .menu__content-video {
+            li {
+                padding: 10px;
+                &:hover{
+                    background-color: #4C4C4C;
+                }
+            }
+        }
         .menu__subscription {
             .menu__subscription-title {
-                padding: 5px;
+                padding: 10px;
                 color: #A3A3A3;
             }
             ul{

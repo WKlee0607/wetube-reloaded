@@ -329,10 +329,10 @@ export const videoOwnerSubscription = async (req, res) => {
     return res.sendStatus(200);
 };
 
-
+// subscription 창으로 가서 구독한 유저들의 videos보기
 export const seeMySubscription = async (req, res) => {
-    const {params:{id}} = req;
-    const user = await User.findById(id).populate({path: "sub", populate : {path: "subscribing", populate : {path : "videos", populate : {path :"owner"}}}});
+    const {session:{user: {_id}} } = req;
+    const user = await User.findById(_id).populate({path: "sub", populate : {path: "subscribing", populate : {path : "videos", populate : {path :"owner"}}}});
     if(!user){
         req.flash("error", "User is not exist");
         return res.sendStatus(404);
@@ -352,5 +352,17 @@ export const getUserSubscription = async (req, res) => {
         return res.sendStatus(404);
     }
     const subscribing = user.sub.subscribing
-    return res.status(200).json({subscribing : subscribing});
+    return res.status(200).json({subscribing});
+}
+
+//좋아요한 동영상 불러오기 controller
+export const getUserLikeVideos = async(req, res) => {
+    const {session:{user: {_id}} } = req;
+    const user = await User.findById(_id).populate({path:"likes"});
+    if(!user){
+        req.flash("error", "User is not exist");
+        return res.sendStatus(404);
+    }
+    const likedVideos = user.likes;
+    return res.render("users/likedVideos", {pageTitle:`${user.username}'s LikedVideos`,likedVideos});
 }

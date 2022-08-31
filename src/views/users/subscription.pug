@@ -2,9 +2,11 @@ extends ../base.pug
 include ../mixins/subscriptionVideos
 
 block content
+    div 
+        h1=pageTitle
     div.subscription
         each video in descVideos 
             +subVideos(video)
         else
-            span.empty__message Channels that you subscribed did not upload videos yet or Subscribe channels
+            h1.empty__message Channels that you subscribed did not upload videos yet or Subscribe channels
 

@@ -38,6 +38,7 @@ const createSubscriptionUser = (subscribing) => {
         ul.append(a);
     })
 }
+
 //메뉴창 구독자 없애기
 const removeSubscriptionUser = () => {
     const menuSubscriptionUl = document.querySelector(".menu__subscription ul");
@@ -73,7 +74,11 @@ const handleHeaderMenuBarClick = async () => {
         }); 
         if(response.status === 200){
             const {subscribing} = await response.json();
-            if(subscribing){
+            if(subscribing.length === 0){
+                document.querySelector(".menu__subscription-title").classList.add("hidden");
+            }
+            if(subscribing.length !== 0){
+                document.querySelector(".menu__subscription-title").classList.remove("hidden")
                 createSubscriptionUser(subscribing);
             }
         }
@@ -83,7 +88,7 @@ const handleHeaderMenuBarClick = async () => {
     menu.classList.remove("hiddenMenu");
     menu.classList.remove("hidden");
     menu.classList.add("showMenu");
-}
+};
 
 //메뉴바의 메뉴 아이콘 누르기
 const handleMenuMenuBarClick = () => {
@@ -95,7 +100,7 @@ const handleMenuMenuBarClick = () => {
 
     //구독한 유저 데이터 없애기
     removeSubscriptionUser();
-}
+};
 
 headerMenuBar.addEventListener("click", handleHeaderMenuBarClick)
 menuMenuBar.addEventListener("click", handleMenuMenuBarClick)
