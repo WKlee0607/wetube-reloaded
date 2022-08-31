@@ -1,4 +1,4 @@
-div.menu.hidden
+div.menu.hidden(data-user=loggedInUser._id)
     div.menu__header 
         include header-left
     div.menu__content
@@ -20,4 +20,6 @@ div.menu.hidden
         hr
         if loggedIn
             div.menu__subscription 
+                span.menu__subscription-title Subscription
+                    
                 

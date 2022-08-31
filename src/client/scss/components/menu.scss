@@ -11,7 +11,7 @@
     }
     .menu__header {
         display: flex;
-        margin-left: 30px;
+        padding-left: 30px;
         height: 56px;
         width: 100%;
     }
@@ -31,7 +31,37 @@
                     padding: 10px;
                 }
             }
-            
+        }
+        .menu__subscription {
+            .menu__subscription-title {
+                padding: 5px;
+                color: #A3A3A3;
+            }
+            ul{
+                margin-top: 5px;
+                .menu__subscription-li{
+                    padding: 5px;
+                    display: flex;
+                    &:hover{
+                        background-color: #4C4C4C;
+                    }
+                    .menu__subscription-userIcon{
+                        img{
+                            height: 35px;
+                            width: 35px;
+                            border-radius: 50%;
+                        }
+                        span {
+                            font-size: 35px;
+                        }
+                    }
+                    .menu__subscription-username{
+                        display: flex;
+                        padding-left: 10px;
+                        align-items: center;
+                    }
+                }
+            }
         }
     }
 }

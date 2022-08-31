@@ -342,3 +342,15 @@ export const seeMySubscription = async (req, res) => {
     const descVideos = videos.sort((a,b) => new Date(b.createdAt) - new Date(a.createdAt))// 내림차순 정렬
     return res.render("users/subscription",{pageTitle:`${user.username}'s Subscription`, user, descVideos});
 };
+
+//메뉴창 열 때 subscription 목록 가져오기
+export const getUserSubscription = async (req, res) => {
+    const {params:{id}} = req;
+    const user = await User.findById(id).populate({path: "sub", populate : {path: "subscribing"}});
+    if(!user){
+        req.flash("error", "User is not exist");
+        return res.sendStatus(404);
+    }
+    const subscribing = user.sub.subscribing
+    return res.status(200).json({subscribing : subscribing});
+}
