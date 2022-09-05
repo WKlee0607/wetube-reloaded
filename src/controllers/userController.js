@@ -3,9 +3,6 @@ import Video from "../models/Video"
 import fetch from "cross-fetch";
 import bcrypt from "bcrypt";
 import session from "express-session";
-
-import aws from "aws-sdk";
-import {s3} from "../middlewares"
 import { async } from "regenerator-runtime";
 
 export const getJoin = (req, res) => res.render("join",{pageTitle:"Join"});

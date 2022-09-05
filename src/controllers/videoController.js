@@ -116,10 +116,13 @@ export const search = async (req, res) => {
     let videos =[];//array로 만든 이유: search.pug에서 each를 이용하는데 이 each는 array만 받기 떄문임.
     if(keyword){
         videos = await Video.find({
-            title :{
-                $regex: new RegExp(keyword, "i")//RegExp(단어, 속성):keyword를 포함하는 비디오를 검색해줌 ,i: keyword대소문자 구분없이 검색하도록 해줌
-            }
+            $or: [
+                {title :{ $regex: new RegExp(keyword, "i")//RegExp(단어, 속성):keyword를 포함하는 비디오를 검색해줌 ,i: keyword대소문자 구분없이 검색하도록 해줌
+                }},
+                {hashtags : { $regex: new RegExp(keyword, "i")}}
+            ]
         }).populate("owner")
+        console.log(videos);
     }
     return res.render("search",{pageTitle:"Search", videos});
 };
