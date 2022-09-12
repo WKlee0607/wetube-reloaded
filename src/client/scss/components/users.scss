@@ -1,0 +1,33 @@
+.user-mixin{
+    display: flex;
+    margin: 30px;
+    height: 150px;
+    .user-mixin__textAvatar{
+        font-size: 150px;
+        padding: 0 30px;
+    }
+    .user-mixin__avatar {
+        width: 150px;
+        height: 150px;
+        border-radius: 50%;
+        padding: 0 30px;
+    }
+    .user-mixin__data {
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        .user-mixin__username {
+            font-size: 25px;
+            margin-bottom: 10px;
+        }
+        .user-mixin__meta {
+            font-size: 15px;
+            opacity: 0.6;
+            margin-bottom: 10px;
+        }
+        .user-mixin__eamil{
+            font-size: 15px;
+            opacity: 0.6;
+        }
+    }
+}

@@ -1,14 +1,25 @@
 extends base.pug
-include mixins/video
+include mixins/subscriptionVideos
+include mixins/users
 
 block content
     form(method="GET").search__form
-        input(placeholder="Search by title", name="keyword", type="text")
+        input(placeholder="Search videos or users", name="keyword", type="text")
         button 
             i.fas.fa-search
 
-    div.video-grid
-        each video in videos 
-            +video(video)
-        else 
-            span.empty__message No videos found
+    div
+        if videos.length === 0 && users.length === 0
+            span Nothing Found
+        div.search-users
+            if keyword && users.length >= 1
+                span.keyword-title #{keyword} 관련 users
+            each user in users 
+                +users(user) 
+        div.search-videos
+            if keyword && videos.length >= 1
+                span.keyword-title #{keyword} 관련 videos
+            each video in videos 
+                +subVideos(video)
+            
+                

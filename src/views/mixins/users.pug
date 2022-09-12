@@ -1,0 +1,20 @@
+mixin users(user)
+    a(href=`/users/${user._id}`)
+        div.user-mixin
+            if !user.avatarUrl
+                div.user-mixin__textAvatar 😎
+            else
+                if user.avatarUrl.split("/")[0] === "uploads"
+                    img(src="/" + user.avatarUrl, crossorigin).user-mixin__avatar
+                else
+                    if user.avatarUrl
+                        img(src=user.avatarUrl, crossorigin).user-mixin__avatar
+                    else 
+                        div.user-mixin__textAvatar  😎
+            div.user-mixin__data
+                div.user-mixin__username=user.username
+                div.user-mixin__meta
+                    span.user-mixin__subscription  구독자 #{user.sub.subscription.length}명 ∙  
+                    span.user-mixin__videos 동영상 #{user.videos.length}개
+                div.user-mixin__eamil=user.email
+        hr 

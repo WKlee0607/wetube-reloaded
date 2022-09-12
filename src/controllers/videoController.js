@@ -114,17 +114,20 @@ export const search = async (req, res) => {
     //console.log(keyword); -> 값 O: 값, 값 X: undefined
     const { keyword } = req.query;//-> req.query의 keyword의 value를 반환해줌.
     let videos =[];//array로 만든 이유: search.pug에서 each를 이용하는데 이 each는 array만 받기 떄문임.
+    let users  = []
     if(keyword){
         videos = await Video.find({
             $or: [
-                {title :{ $regex: new RegExp(keyword, "i")//RegExp(단어, 속성):keyword를 포함하는 비디오를 검색해줌 ,i: keyword대소문자 구분없이 검색하도록 해줌
-                }},
-                {hashtags : { $regex: new RegExp(keyword, "i")}}
+                {title :{ $regex: new RegExp(keyword, "i")}},//RegExp(단어, 속성):keyword를 포함하는 비디오를 검색해줌 ,i: keyword대소문자 구분없이 검색하도록 해줌
+                {hashtags : { $regex: new RegExp(keyword, "i")}},
             ]
         }).populate("owner")
-        console.log(videos);
+        users = await User.find({
+            username : { $regex: new RegExp(keyword, "i")},
+        })
+        console.log(users);
     }
-    return res.render("search",{pageTitle:"Search", videos});
+    return res.render("search",{pageTitle:"Search", videos, users, keyword});
 };
 
 export const registerView = async(req, res) => {
