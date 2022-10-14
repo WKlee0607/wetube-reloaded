@@ -1,3 +1,12 @@
+const agent = window.navigator.userAgent.toLowerCase();
+let browsername;
+if(agent.indexOf("chrome") != -1){
+    browsername = "chrome";
+} 
+if(agent.indexOf("firefox") != -1){
+    browsername = "firefox";
+}
+
 const video = document.querySelector("video");
 const playBtn = document.getElementById("play");
 const playBtnIcon = playBtn.querySelector("i");
@@ -154,7 +163,10 @@ volumeRange.addEventListener("input", handleVolumeInput);
 volumeRange.addEventListener("change", handleVolumeChange);
 if(video.src.split("/")[3] === "uploads"){
     video.addEventListener("loadeddata", handleLoadedMetadata);
-} else {
+} 
+if(browsername == "chrome"){
+    video.addEventListener("canplay", handleLoadedMetadata);
+} else{
     video.addEventListener("canplay", handleLoadedMetadata);
     handleLoadedMetadata(); // localhost에서는 video controller가 보이지 않는 버그가 있지만, heroku앱에서는 video controller가 잘 돌아감 -> 이걸 하는 이유: heroku앱에서 동영상 길이가 표시되지 않아서.
 }
