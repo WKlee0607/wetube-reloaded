@@ -146,7 +146,7 @@ const focus = (event) => {
     }  
 };
 
-video.addEventListener("loadeddata", handleLoadedMetadata);
+//video.addEventListener("loadeddata", handleLoadedMetadata);
 video.addEventListener("canplay", handleLoadedMetadata);
 
 playBtn.addEventListener("click", handlePlayClick);
