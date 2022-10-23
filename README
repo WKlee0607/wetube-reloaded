@@ -11,3 +11,6 @@ NodeJS, Express, MongoDB, ES6를 이용하여 사이트를 구현하였습니다
 storage로는 AWS3를 이용하였습니다.
 앱 배포는 heroku를 이용하였습니다.
 사이트 : https://itube-by-wk.herokuapp.com/
+
+총 코드수: 25,080줄이며, kakaoSDK와 package-lock.json코드를 뺀 제가 작성한 코드는 3,215줄 입니다. 
+         코드 수를 세어본 경험이 처음이라 자기 소개서에서 잘못 기입하였습니다. 죄송합니다.
