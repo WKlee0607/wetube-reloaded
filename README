@@ -8,7 +8,7 @@ NodeJS, Express, MongoDB, ES6를 이용하여 사이트를 구현하였습니다
 마지막으로, 프로필 우측 상단의 프로필을 클릭하면 유저가 업로드한 동영상을 보실 수 있고, Edit profile에서 프로필을 변경할 수 있습니다.
 - 총 코드 line: 3,215줄 입니다.
 
-storage로는 AWS3를 이용하였고, 앱 배포는 heroku를 이용하였습니다.
+storage로는 AWS3를 이용하였고, 앱 배포는 heroku 무료 배포를 이용하였습니다. * 현재 Heroku 무료 배포 서비스를 웹 사이트는 사용 불가능합니다.
 사이트 : https://itube-by-wk.herokuapp.com/
 
 
